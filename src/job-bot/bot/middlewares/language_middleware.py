@@ -8,4 +8,4 @@ class LanguageMiddleware(BaseMiddleware):
             handler: Callable[[Message, Dict[str, any]], Awaitable[Any]],
             event: Message,
             data: Dict[str, Any]
-    ) -> Any:
+    ) -> Any: pass

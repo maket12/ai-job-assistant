@@ -11,6 +11,9 @@ DATA_DIR = Path(data_env).resolve()
 
 MEDIA_DIR = DATA_DIR / os.getenv("MEDIA_DIR", "media")
 
+MIGRATIONS_DIR = DATA_DIR / os.getenv("MIGRATIONS_DIR", "migrations")
+SQL_DIR = MIGRATIONS_DIR / "sql"
+
 MEDIA_DIR.mkdir(parents=True, exist_ok=True)
 
 # Media
