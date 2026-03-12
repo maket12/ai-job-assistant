@@ -1,52 +1,50 @@
 import asyncio
-from aiogram import Dispatcher, Bot
-from aiogram.client.session.aiohttp import AiohttpSession
-from aiogram.client.telegram import TelegramAPIServer
-from bot.main_router.include_routers import include_all_routers
-from utils.config_env import load_bot_token
-from services.database.database_code import Database
-from services.logs.logging import logger
 
-db = Database()
+from aiogram import Dispatcher, Bot
+from aiogram.client.default import DefaultBotProperties
+from aiogram.enums import ParseMode
+
+from src.bot.middlewares.user_context import UserContextMiddleware
+from src.bot.handlers import get_main_router
+
+from src.config import BOT_TOKEN, load_db_config
+
+from src.services.database.main import Database
+from src.services.logs.logger import bot_logger
 
 
 async def main():
-    logger.info("Разработчик бота: https://kwork.ru/user/maket14.")
-    logger.info("Проект является коммерческим и создан в рамках заказа.")
+    bot_logger.info("🧑‍💻 Developed by https://github.com/maket12")
 
+    bot_logger.info("⚙️ Initialising bot and database...")
     await asyncio.sleep(1)
 
-    logger.info("Подготовка к запуску...")
+    bot = Bot(
+        token=BOT_TOKEN,
+        default=DefaultBotProperties(parse_mode=ParseMode.HTML)
+    )
+    db = Database(dsn=load_db_config())
 
-    await asyncio.sleep(1)
-
-    result = db.create_tables()
-    if result:
-        logger.debug("База данных подключена успешно")
-    else:
-        logger.critical("Возникла ошибка при подключении к базе данных!")
-        return
-
+    bot_logger.info("🛜 Connecting to Telegram...")
     await asyncio.sleep(1)
 
     dp = Dispatcher()
-    include_all_routers(dp=dp)
+    dp.update.outer_middleware(UserContextMiddleware(db))
+    dp.include_router(router=get_main_router())
 
-    bot_token = load_bot_token()
-    if bot_token:
-        logger.debug("Бот успешно запущен!")
-    else:
-        logger.critical("Возникла ошибка при запуске бота. Токен не найден.")
-        return
+    try:
+        bot_logger.debug(f"🤖 Bot is starting...")
+        await db.connect()
+        await dp.start_polling(bot)
+    except Exception as e:
+        bot_logger.critical(f"💥 CRITICAL ERROR OCCURRED: {e}")
+    finally:
+        bot_logger.info("🔁 Closing database and telegram connections...")
 
-    session = AiohttpSession(
-        api=TelegramAPIServer.from_base("http://localhost:8081",
-                                        is_local=True)
-    )
+        await db.disconnect()
+        await bot.session.close()
 
-    bot = Bot(token=bot_token, session=session)
-
-    await dp.start_polling(bot)
+        bot_logger.info("🎉 Bot stopped successfully")
 
 
 if __name__ == "__main__":

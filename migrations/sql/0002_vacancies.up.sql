@@ -1,7 +1,7 @@
 -- Vacancies table
 CREATE TABLE IF NOT EXISTS vacancies (
     id SERIAL PRIMARY KEY,
-    external_id VARCHAR(100) NOT NULL,  -- ID of vacancy in HH.ru, telegram channels or other sources
+    external_id VARCHAR(100) NOT NULL,  -- ID of vacancy in HH.ru, Telegram channels or other sources
     source VARCHAR(20) NOT NULL,  -- Such as HH.ru, LinkedIn, Telegram
 
     title TEXT NOT NULL,

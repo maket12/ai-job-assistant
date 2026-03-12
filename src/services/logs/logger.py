@@ -97,6 +97,9 @@ class AppLogger:
     def log_db_critical(self, err: Exception) -> None:
         self.critical(f"💾🔴 DB CRITICAL ERROR: {err}.", exc_info=True)
 
+    def log_middleware_error(self, err: Exception) -> None:
+        self.error(f"📨 MIDDLEWARE ERROR: {err}")
+
     def log_handler_error(self, handler_name: str, err: Exception) -> None:
         self.error(f"🤖 ERROR IN {handler_name}: {err}")
 

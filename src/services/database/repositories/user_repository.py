@@ -1,6 +1,6 @@
 from typing import List, Optional
 from src.services.database.repositories.base import BaseRepository
-from src.services.database.models import User, Language
+from src.services.database.models import User
 
 class UserRepository(BaseRepository):
     async def create_user(
@@ -14,6 +14,10 @@ class UserRepository(BaseRepository):
         try:
             await self._pool.execute(
                 query, user_id, username, first_name, language, cv
+            )
+            self._logger.log_db_info(
+                f"Create new user: user_id={user_id}, "
+                f"username={username}, first_name={first_name}"
             )
         except Exception as e:
             self._logger.log_db_error(query_name=query_name, err=e)
@@ -58,6 +62,10 @@ class UserRepository(BaseRepository):
                 query, user_id, username,
                 first_name, language, cv
             )
+            self._logger.log_db_info(
+                f"Update user with id={user_id}: username={username}, "
+                f"first_name={first_name}, language={language}, cv={cv}"
+            )
         except Exception as e:
             self._logger.log_db_error(query_name=query_name, err=e)
             raise
@@ -69,6 +77,7 @@ class UserRepository(BaseRepository):
 
         try:
             await self._pool.execute(query, user_id)
+            self._logger.log_db_info(f"Delete user with id={user_id}")
         except Exception as e:
             self._logger.log_db_error(query_name=query_name, err=e)
             raise

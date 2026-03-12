@@ -4,7 +4,7 @@ from aiogram import Router, types
 from aiogram.filters import Command
 
 from src.bot.handlers.commands.start import start
-from src.bot.keyboard.inline_buttons.buttons import create_change_language_markup
+from src.bot.keyboard.reply_buttons.buttons import create_main_menu_markup
 
 from src.locales.messages import MESSAGES
 
@@ -17,8 +17,8 @@ from src.services.logs.logger import bot_logger
 router = Router()
 
 
-@router.message(Command("language"))
-async def language(message: types.Message, db: Database, user: Optional[User]):
+@router.message(Command("menu"))
+async def menu(message: types.Message, db: Database, user: Optional[User]):
     lang = DEFAULT_LANGUAGE
     try:
         if user is None:
@@ -27,11 +27,11 @@ async def language(message: types.Message, db: Database, user: Optional[User]):
             return
 
         lang = user.language
+
         await message.answer(
-            text=MESSAGES[lang]["language"],
-            reply_markup=create_change_language_markup(),
+            text=MESSAGES[lang]["menu"],
+            reply_markup=create_main_menu_markup(lang=lang)
         )
     except Exception as e:
-        bot_logger.log_handler_error("language", e)
+        bot_logger.log_handler_error("menu", e)
         await message.answer(text=MESSAGES[lang]["unknown_error"])
-

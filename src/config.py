@@ -1,6 +1,7 @@
 import os
 from pathlib import Path
 from dotenv import load_dotenv
+
 from src.utils.exceptions import EnvVarMissingError
 
 load_dotenv()
@@ -8,8 +9,7 @@ load_dotenv()
 # --- Data filepaths ---
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-data_env = os.getenv("BASE_DATA_DIR", "./data")
-DATA_DIR = Path(data_env).resolve()
+DATA_DIR = BASE_DIR / os.getenv("DATA_DIR", "data")
 
 MEDIA_DIR = DATA_DIR / os.getenv("MEDIA_DIR", "media")
 LOGS_DIR = DATA_DIR / os.getenv("LOGS_DIR", "logs")
@@ -22,7 +22,7 @@ LOGS_DIR.mkdir(parents=True, exist_ok=True)
 
 # --- Database configuration
 def load_db_config() -> str:
-    """Loads database config from environment's variables and returns dsn"""
+    """Loads database config from environment's variables and returns connection uri"""
     host = os.getenv("DB_HOST")
     if not host:
         raise EnvVarMissingError("DB_HOST")
@@ -41,9 +41,7 @@ def load_db_config() -> str:
     if not db_name:
         raise EnvVarMissingError("DB_NAME")
 
-    ssl_mode = os.getenv("DB_SSL_MODE", "prefer")
-
-    return f"host={host} port={port} user={user} password={password} dbname={db_name} sslmode={ssl_mode}"
+    return f"postgresql://{user}:{password}@{host}:{port}/{db_name}"
 
 def load_db_test_config() -> str:
     """Loads test database config from environment's variables and returns connection uri"""
@@ -72,8 +70,9 @@ def load_db_test_config() -> str:
 
 # --- Media paths ---
 WELCOME_VIDEO = MEDIA_DIR / "welcome.mp4"
+WELCOME_VIDEO_FID = "BAACAgIAAxkBAAMUabJHwGPAr0xFl7vPUNP3KYAu0WUAAmeLAAIiaJlJsyvuJcpMVTU6BA"
 
 # --- Bot's configuration ---
 BOT_TOKEN = os.getenv("BOT_TOKEN")
 
-DEFAULT_LANGUAGE = os.getenv("DEFAULT_LANGUAGE", "en")
+DEFAULT_LANGUAGE = "en"
