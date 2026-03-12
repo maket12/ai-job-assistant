@@ -9,12 +9,12 @@ CREATE TABLE IF NOT EXISTS users (
     updated_at TIMESTAMP WITH TIME ZONE
 );
 
--- User settings table
+-- User search settings table
 CREATE TABLE IF NOT EXISTS user_settings (
     id SERIAL PRIMARY KEY,
     user_id BIGINT UNIQUE NOT NULL REFERENCES users(id) ON DELETE CASCADE,
     skills jsonb DEFAULT '[]'::jsonb,
-    grade VARCHAR(20),
+    grade VARCHAR(20),  -- Intern/Junior/Senior and etc
     job_type TEXT,  -- Such as remote, contract, etc.
     location TEXT,  -- If specified - country/city
     updated_at TIMESTAMP WITH TIME ZONE
