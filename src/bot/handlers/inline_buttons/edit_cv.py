@@ -44,8 +44,7 @@ async def delete_cv(call: types.CallbackQuery, user: User):
 @router.callback_query(F.data == "delete_confirm")
 async def delete_confirm(call: types.CallbackQuery, db: Database, user: User):
     try:
-        await db.users.update_user(user_id=user.id, cv="")
-
+        await db.users.update_user_cv(user_id=user.id, cv=None)
         await call.message.delete()
         await call.message.answer(text=MESSAGES[user.language]["cv_deleted"])
     except Exception as e:

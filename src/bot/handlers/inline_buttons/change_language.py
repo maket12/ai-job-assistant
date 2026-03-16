@@ -17,7 +17,7 @@ async def change_language(call: types.CallbackQuery, db: Database, user: User):
         new_lang = call.data.split('_')[-1]
         user.language = new_lang
 
-        await db.users.update_user(
+        await db.users.update_user_language(
             user_id=user.id,
             language=new_lang
         )
