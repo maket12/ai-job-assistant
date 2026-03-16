@@ -17,7 +17,7 @@ async def main():
     bot_logger.info("🧑‍💻 Developed by https://github.com/maket12")
 
     bot_logger.info("⚙️ Initialising bot and database...")
-    await asyncio.sleep(1)
+    # await asyncio.sleep(1)
 
     bot = Bot(
         token=BOT_TOKEN,
@@ -26,7 +26,7 @@ async def main():
     db = Database(dsn=load_db_config())
 
     bot_logger.info("🛜 Connecting to Telegram...")
-    await asyncio.sleep(1)
+    # await asyncio.sleep(1)
 
     dp = Dispatcher()
     dp.update.outer_middleware(UserContextMiddleware(db))

@@ -18,20 +18,12 @@ router = Router()
 
 
 @router.message(Command("menu"))
-async def menu(message: types.Message, db: Database, user: Optional[User]):
-    lang = DEFAULT_LANGUAGE
+async def menu(message: types.Message, user: User):
     try:
-        if user is None:
-            bot_logger.warning(f"⚠️ WARNING: User {message.from_user.id} is not in database but tried to call method \"language\"")
-            await start(message=message, db=db, user=user)
-            return
-
-        lang = user.language
-
         await message.answer(
-            text=MESSAGES[lang]["menu"],
-            reply_markup=create_main_menu_markup(lang=lang)
+            text=MESSAGES[user.language]["menu"],
+            reply_markup=create_main_menu_markup(current_language=user.language)
         )
     except Exception as e:
         bot_logger.log_handler_error("menu", e)
-        await message.answer(text=MESSAGES[lang]["unknown_error"])
+        await message.answer(text=MESSAGES[user.language]["unknown_error"])
