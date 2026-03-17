@@ -4,7 +4,8 @@ CREATE TABLE IF NOT EXISTS users (
     username VARCHAR(64),
     first_name VARCHAR(64),
     language VARCHAR(5) DEFAULT 'en',
-    cv TEXT, -- Telegram File ID
+    cv_file_id TEXT, -- Telegram File ID
+    cv_path TEXT, -- Path to CV file
     created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP WITH TIME ZONE
 );

@@ -5,7 +5,7 @@ from src.services.database.models import User
 class UserRepository(BaseRepository):
     async def create_user(
             self, user_id: int, username: str,
-            first_name: str, language: str, cv: Optional[str] = None
+            first_name: str, language: str
     ) -> None:
         """Create user in database"""
         query_name = "create_user"
@@ -13,7 +13,7 @@ class UserRepository(BaseRepository):
 
         try:
             await self._pool.execute(
-                query, user_id, username, first_name, language, cv
+                query, user_id, username, first_name, language
             )
             self._logger.log_db_info(
                 f"Create new user: user_id={user_id}, "
@@ -63,15 +63,15 @@ class UserRepository(BaseRepository):
             self._logger.log_db_error(query_name=query_name, err=e)
             raise
 
-    async def update_user_cv(self, user_id: int, cv: Optional[str] = None) -> None:
+    async def update_user_cv(self, user_id: int, cv_file_id: str, cv_path: str) -> None:
         """Update user's cv"""
         query_name = "update_user_cv"
         query = self._get_query(entity="users", query_name=query_name)
 
         try:
-            await self._pool.execute(query, user_id, cv)
+            await self._pool.execute(query, user_id, cv_file_id, cv_path)
             self._logger.log_db_info(
-                f"Update user with id={user_id}: cv={cv}"
+                f"Update user with id={user_id}: cv_path={cv_path}"
             )
         except Exception as e:
             self._logger.log_db_error(query_name=query_name, err=e)
