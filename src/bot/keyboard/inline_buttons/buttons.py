@@ -4,8 +4,35 @@ from aiogram.utils.keyboard import InlineKeyboardBuilder
 from src.locales.inline_buttons import INLINE_BUTTONS
 
 from src.config import DEFAULT_LANGUAGE
-from src.locales.messages import MESSAGES
 
+
+def create_main_menu_markup(current_language: str = DEFAULT_LANGUAGE) -> InlineKeyboardMarkup:
+    texts = INLINE_BUTTONS[current_language]["main_menu"]
+
+    markup = InlineKeyboardMarkup(inline_keyboard=[
+        [
+            InlineKeyboardButton(text=texts[0], callback_data="search")
+        ],
+        [
+            InlineKeyboardButton(text=texts[1], callback_data="account")
+        ]
+    ])
+
+    return markup
+
+def create_account_menu_markup(current_language: str = DEFAULT_LANGUAGE) -> InlineKeyboardMarkup:
+    texts = INLINE_BUTTONS[current_language]["account_menu"]
+
+    markup = InlineKeyboardMarkup(inline_keyboard=[
+        [
+            InlineKeyboardButton(text=texts[0], callback_data="change_language")
+        ],
+        [
+            InlineKeyboardButton(text=texts[1], callback_data="edit_cv")
+        ]
+    ])
+
+    return markup
 
 def create_change_language_markup(languages: dict = INLINE_BUTTONS, current_language: str = DEFAULT_LANGUAGE) -> InlineKeyboardMarkup:
     markup = InlineKeyboardBuilder()

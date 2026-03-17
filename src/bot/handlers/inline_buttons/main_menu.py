@@ -1,23 +1,23 @@
 from aiogram import Router, types, F
+from aiogram.fsm.context import FSMContext
 
-from src.bot.handlers.commands.language import language
-from src.bot.keyboard.reply_buttons.buttons import create_account_menu_markup
+from src.bot.keyboard.inline_buttons.buttons import create_account_menu_markup
 
 from src.locales.messages import MESSAGES
-from src.locales.reply_buttons import REPLY_BUTTONS
 
+from src.services.database.main import Database
 from src.services.database.models import User
 from src.services.logs.logger import bot_logger
 
 router = Router()
 
-ACCOUNT_BUTTONS = [REPLY_BUTTONS[l]["main_menu"][1] for l in REPLY_BUTTONS]
 
+@router.callback_query(F.data == "account")
+async def account(call: types.CallbackQuery, state: FSMContext, db: Database, user: User):
+    msg = None
 
-@router.message(F.text.in_(ACCOUNT_BUTTONS))
-async def account(message: types.Message, user: User):
     try:
-        await message.answer(
+        msg = await call.message.answer(
             text=MESSAGES[user.language]["account_info"].format(
                 id=user.id, name=user.first_name, lang=user.language,
                 cv_set=('✅' if user.cv_file_id is not None else '❌'),
@@ -27,4 +27,8 @@ async def account(message: types.Message, user: User):
         )
     except Exception as e:
         bot_logger.log_handler_error("account", e)
-        await message.answer(text=MESSAGES[user.language]["unknown_error"])
+        msg = await call.message.answer(text=MESSAGES[user.language]["unknown_error"])
+    finally:
+        await state.update_data(
+            messages_to_delete=[msg.message_id] if msg else []
+        )

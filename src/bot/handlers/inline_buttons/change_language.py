@@ -1,4 +1,5 @@
 from aiogram import Router, types, F
+from aiogram.fsm.context import FSMContext
 
 from src.bot.handlers.commands.menu import menu
 
@@ -12,7 +13,8 @@ router = Router()
 
 
 @router.callback_query(F.data.startswith("change_language"))
-async def change_language(call: types.CallbackQuery, db: Database, user: User):
+async def change_language(call: types.CallbackQuery, state: FSMContext, db: Database, user: User):
+    msg = None
     try:
         new_lang = call.data.split('_')[-1]
         user.language = new_lang
@@ -29,12 +31,13 @@ async def change_language(call: types.CallbackQuery, db: Database, user: User):
         await menu(message=call.message, user=user)
     except Exception as e:
         bot_logger.log_handler_error("change_language", e)
-        await call.message.answer(text=MESSAGES[user.language]["unknown_error"])
+        msg = await call.message.answer(text=MESSAGES[user.language]["unknown_error"])
     finally:
-        await call.message.delete()
+        await state.update_data(messages_to_delete=[msg.message_id] if msg else [])
 
 @router.callback_query(F.data == "current_language")
-async def current_language(call: types.CallbackQuery, user: User):
+async def current_language(call: types.CallbackQuery, state: FSMContext,user: User):
+    msg = None
     try:
         await call.answer(
             text=MESSAGES[user.language]["current_language"],
@@ -42,4 +45,6 @@ async def current_language(call: types.CallbackQuery, user: User):
         )
     except Exception as e:
         bot_logger.log_handler_error("current_language", e)
-        await call.message.answer(text=MESSAGES[user.language]["unknown_error"])
+        msg = await call.message.answer(text=MESSAGES[user.language]["unknown_error"])
+    finally:
+        await state.update_data(messages_to_delete=[msg.message_id] if msg else [])

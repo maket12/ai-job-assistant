@@ -5,6 +5,7 @@ from aiogram.client.default import DefaultBotProperties
 from aiogram.enums import ParseMode
 
 from src.bot.middlewares.user_context import UserContextMiddleware
+from src.bot.middlewares.chat_cleaner import ChatCleanerMiddleware
 from src.bot.handlers import get_main_router
 
 from src.config import BOT_TOKEN, load_db_config
@@ -30,6 +31,7 @@ async def main():
 
     dp = Dispatcher()
     dp.update.outer_middleware(UserContextMiddleware(db))
+    dp.update.outer_middleware(ChatCleanerMiddleware())
     dp.include_router(router=get_main_router())
 
     try:

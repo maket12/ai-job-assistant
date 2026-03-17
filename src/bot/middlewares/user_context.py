@@ -9,6 +9,7 @@ from src.services.logs.logger import AppLogger, bot_logger
 from src.bot.handlers.commands.start import start
 
 class UserContextMiddleware(BaseMiddleware):
+    """This middleware stores objects such as Database and User into handler data"""
     def __init__(self, db: Database, logger: AppLogger = bot_logger):
         self._db = db
         self._logger = logger
