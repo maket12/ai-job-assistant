@@ -20,6 +20,25 @@ async def test_create_and_get_user_and_exists(user_repo):
     assert exists
 
 @pytest.mark.asyncio
+async def test_update_user_language(user_repo):
+    test_uid = 145
+    test_language = "ru"
+
+    # Create a user in advance
+    await user_repo.create_user(
+        user_id=test_uid, username="zervany",
+        first_name="Vladimir", language="en"
+    )
+
+    # Update the user
+    await user_repo.update_user_language(user_id=test_uid, language=test_language)
+
+    # Check if the update was successful
+    user = await user_repo.get_user(user_id=test_uid)
+
+    assert user.language == test_language
+
+@pytest.mark.asyncio
 async def test_update_user_cv(user_repo):
     test_uid = 145
     test_cv = "An amazing CV"
