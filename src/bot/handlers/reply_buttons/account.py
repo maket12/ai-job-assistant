@@ -20,7 +20,7 @@ async def account(message: types.Message, user: User):
         await message.answer(
             text=MESSAGES[user.language]["account_info"].format(
                 id=user.id, name=user.first_name, lang=user.language,
-                cv_set=('✅' if user.cv is not None else '❌'),
+                cv_set=('✅' if user.cv_file_id is not None else '❌'),
                 created_at=user.created_at.strftime("%Y-%m-%d")
             ),
             reply_markup=create_account_menu_markup(current_language=user.language)

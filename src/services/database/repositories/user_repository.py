@@ -63,7 +63,10 @@ class UserRepository(BaseRepository):
             self._logger.log_db_error(query_name=query_name, err=e)
             raise
 
-    async def update_user_cv(self, user_id: int, cv_file_id: str, cv_path: str) -> None:
+    async def update_user_cv(
+            self, user_id: int,
+            cv_file_id: Optional[str], cv_path: Optional[str]
+    ) -> None:
         """Update user's cv"""
         query_name = "update_user_cv"
         query = self._get_query(entity="users", query_name=query_name)

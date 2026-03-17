@@ -17,8 +17,11 @@ LOGS_DIR = DATA_DIR / os.getenv("LOGS_DIR", "logs")
 MIGRATIONS_DIR = DATA_DIR / os.getenv("MIGRATIONS_DIR", "migrations")
 SQL_DIR = MIGRATIONS_DIR / "sql"
 
+CVS_DIR = DATA_DIR / os.getenv("CVS_DIR", "cvs")
+
 MEDIA_DIR.mkdir(parents=True, exist_ok=True)
 LOGS_DIR.mkdir(parents=True, exist_ok=True)
+CVS_DIR.mkdir(parents=True, exist_ok=True)
 
 # --- Database configuration
 def load_db_config() -> str:

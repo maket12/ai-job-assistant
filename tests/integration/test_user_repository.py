@@ -41,7 +41,8 @@ async def test_update_user_language(user_repo):
 @pytest.mark.asyncio
 async def test_update_user_cv(user_repo):
     test_uid = 145
-    test_cv = "An amazing CV"
+    test_cv_file_id = "file_id"
+    test_cv_path = "path/to/cv"
 
     # Create a user in advance
     await user_repo.create_user(
@@ -50,12 +51,15 @@ async def test_update_user_cv(user_repo):
     )
 
     # Update the user
-    await user_repo.update_user_cv(user_id=test_uid, cv=test_cv)
+    await user_repo.update_user_cv(
+        user_id=test_uid, cv_file_id=test_cv_file_id, cv_path=test_cv_path
+    )
 
     # Check if the update was successful
     user = await user_repo.get_user(user_id=test_uid)
 
-    assert user.cv == test_cv
+    assert user.cv_file_id == test_cv_file_id
+    assert user.cv_path == test_cv_path
 
 @pytest.mark.asyncio
 async def test_delete_user(user_repo):

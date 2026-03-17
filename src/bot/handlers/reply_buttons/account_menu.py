@@ -27,16 +27,16 @@ async def change_language(message: types.Message, user: User):
 @router.message(F.text.in_(EDIT_CV_BUTTONS))
 async def edit_cv(message: types.Message, user: User):
     try:
-        if user.cv:
+        if user.cv_file_id:
             await message.answer_document(
-                document=user.cv,
+                document=user.cv_file_id,
                 caption=MESSAGES[user.language]["current_cv"]
             )
         await message.answer(
             text=MESSAGES[user.language]["edit_cv"],
             reply_markup=create_edit_cv_markup(
                 current_language=user.language,
-                cv_set=bool(user.cv)
+                cv_set=bool(user.cv_file_id)
             )
         )
     except Exception as e:
