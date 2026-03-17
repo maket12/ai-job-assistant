@@ -2,7 +2,6 @@ INSERT INTO users (
     id,
     username,
     first_name,
-    language,
-    cv
+    language
 )
-VALUES ($1, $2, $3, $4, $5);
+VALUES ($1, $2, $3, $4);

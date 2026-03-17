@@ -26,7 +26,7 @@ MESSAGES = {
 
         "current_cv": "Here is your current CV:",
 
-        "upload_cv": "Send me CV as file with extension <i>.pdf</i>/<i>.docx</i>/<i>.doc</i>/<i>.txt</i>:",
+        "upload_cv": "Send me CV as file with extension .pdf/.docx/.doc/.txt:",
 
         "cv_not_file": "CV must be a file with one of allowing extensions: <i>.pdf</i>, <i>.docx</i>, <i>.doc</i>, <i>.txt</i>",
         

@@ -1,3 +1,5 @@
+from pathlib import Path
+
 from aiogram import Router, types, F
 from aiogram.fsm.context import FSMContext
 
@@ -13,6 +15,8 @@ from src.locales.messages import MESSAGES
 from src.services.database.main import Database
 from src.services.database.models import User
 from src.services.logs.logger import bot_logger
+
+from src.utils.cv_utils import delete_cv as delete_cv_util
 
 router = Router()
 
@@ -33,6 +37,7 @@ async def upload_cv(call: types.CallbackQuery, state: FSMContext, db: Database, 
 @router.callback_query(F.data == "delete_cv")
 async def delete_cv(call: types.CallbackQuery, user: User):
     try:
+        await call.message.delete()
         await call.message.answer(
             text=MESSAGES[user.language]["delete_cv"],
             reply_markup=create_delete_cv_markup(current_language=user.language)
@@ -44,7 +49,10 @@ async def delete_cv(call: types.CallbackQuery, user: User):
 @router.callback_query(F.data == "delete_confirm")
 async def delete_confirm(call: types.CallbackQuery, db: Database, user: User):
     try:
-        await db.users.update_user_cv(user_id=user.id, cv=None)
+        await db.users.update_user_cv(user_id=user.id, cv_file_id=None, cv_path=None)
+
+        delete_cv_util(cv_path=Path(user.cv_path))
+
         await call.message.delete()
         await call.message.answer(text=MESSAGES[user.language]["cv_deleted"])
     except Exception as e:

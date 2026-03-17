@@ -9,7 +9,8 @@ class User:
     username: Optional[str]
     first_name: Optional[str]
     language: str
-    cv: Optional[str]
+    cv_file_id: Optional[str]
+    cv_path: Optional[str]
     created_at: datetime
     updated_at: datetime
 
