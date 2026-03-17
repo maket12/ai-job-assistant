@@ -1,5 +1,15 @@
 INLINE_BUTTONS = {
     "en": {
+        "main_menu": [
+            "Search🔎",
+            "Account👤"
+        ],
+
+        "account_menu": [
+            "Change language🌍",
+            "Edit CV📝"
+        ],
+
         "language_btn": "English🇬🇧",
 
         "edit_cv": [
@@ -13,6 +23,16 @@ INLINE_BUTTONS = {
         ]
     },
     "ru": {
+        "main_menu": [
+            "Поиск🔎",
+            "Аккаунт👤"
+        ],
+
+        "account_menu": [
+            "Изменить язык🌍",
+            "Редактировать резюме📝"
+        ],
+
         "language_btn": "Russian🇷🇺",
 
         "edit_cv": [

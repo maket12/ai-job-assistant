@@ -2,10 +2,12 @@ from aiogram import Router, types
 from aiogram.fsm.context import FSMContext
 from aiogram.types import ReplyKeyboardRemove
 
-from src.bot.handlers.reply_buttons.account import account
+from src.bot.handlers.commands.menu import menu
 from src.bot.state.state_init import UploadCV
 
 from src.locales.messages import MESSAGES
+from src.locales.reply_buttons import REPLY_BUTTONS
+
 from src.utils.cv_utils import cv_is_correct, get_cv_path, delete_cv
 
 from src.services.database.main import Database
@@ -17,12 +19,17 @@ router = Router()
 
 @router.message(UploadCV.get_cv)
 async def get_cv(message: types.Message, state: FSMContext, db: Database, user: User):
+    msg = None
+
     try:
+        if message.text and message.text == REPLY_BUTTONS[user.language]["back_button"]:
+            return
+
         if not message.document or not cv_is_correct(
                 filename=message.document.file_name,
                 mimetype=message.document.mime_type,
         ):
-            await message.answer(
+            msg = await message.answer(
                 text=MESSAGES[user.language]["cv_not_file"],
                 reply_markup=ReplyKeyboardRemove()
             )
@@ -48,7 +55,7 @@ async def get_cv(message: types.Message, state: FSMContext, db: Database, user: 
         # Delete previous CV
         delete_cv(cv_path=cv_path)
 
-        await message.answer(
+        msg = await message.answer(
             text=MESSAGES[user.language]["cv_uploaded"],
             reply_markup=ReplyKeyboardRemove()
         )
@@ -57,4 +64,5 @@ async def get_cv(message: types.Message, state: FSMContext, db: Database, user: 
         await message.answer(text=MESSAGES[user.language]["unknown_error"])
     finally:
         await state.clear()
-        await account(message=message, user=user)
+        await state.update_data(messages_to_delete=[message.message_id, msg.message_id] if msg else [message.message_id])
+        await menu(message=message, state=state, user=user)

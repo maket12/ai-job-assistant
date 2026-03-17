@@ -10,21 +10,3 @@ def create_back_markup(current_language: str = DEFAULT_LANGUAGE) -> ReplyKeyboar
         ]
     ], resize_keyboard=True)
     return markup
-
-def create_main_menu_markup(current_language: str = DEFAULT_LANGUAGE) -> ReplyKeyboardMarkup:
-    buttons = []
-    for btn_text in REPLY_BUTTONS[current_language]["main_menu"]:
-        buttons.append([KeyboardButton(text=btn_text)])
-
-    markup = ReplyKeyboardMarkup(keyboard=buttons, resize_keyboard=True)
-
-    return markup
-
-def create_account_menu_markup(current_language: str = DEFAULT_LANGUAGE) -> ReplyKeyboardMarkup:
-    buttons = []
-    for btn_text in REPLY_BUTTONS[current_language]["account_menu"]:
-        buttons.append([KeyboardButton(text=btn_text)])
-
-    markup = ReplyKeyboardMarkup(keyboard=buttons, resize_keyboard=True)
-
-    return markup

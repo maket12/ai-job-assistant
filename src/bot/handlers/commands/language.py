@@ -1,5 +1,6 @@
 from aiogram import Router, types
 from aiogram.filters import Command
+from aiogram.fsm.context import FSMContext
 
 from src.bot.keyboard.inline_buttons.buttons import create_change_language_markup
 
@@ -12,12 +13,15 @@ router = Router()
 
 
 @router.message(Command("language"))
-async def language(message: types.Message, user: User):
+async def language(message: types.Message, state: FSMContext, user: User):
+    msg = None
     try:
-        await message.answer(
+        msg = await message.answer(
             text=MESSAGES[user.language]["language"],
             reply_markup=create_change_language_markup(),
         )
     except Exception as e:
         bot_logger.log_handler_error("language", e)
-        await message.answer(text=MESSAGES[user.language]["unknown_error"])
+        msg = await message.answer(text=MESSAGES[user.language]["unknown_error"])
+    finally:
+        await state.update_data(messages_to_delete=[message.message_id, msg.message_id] if msg else [message.message_id])
