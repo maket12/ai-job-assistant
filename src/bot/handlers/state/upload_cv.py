@@ -29,7 +29,7 @@ async def get_cv(message: types.Message, state: FSMContext, db: Database, user: 
             return
 
         user.cv = message.document.file_id
-        await db.users.update_user(user_id=user.id, cv=user.cv)
+        await db.users.update_user_cv(user_id=user.id, cv=user.cv)
 
         await message.answer(
             text=MESSAGES[user.language]["cv_uploaded"],

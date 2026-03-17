@@ -49,22 +49,29 @@ class UserRepository(BaseRepository):
 
         return exists
 
-    async def update_user(
-            self, user_id: int, username: Optional[str] = None, first_name: Optional[str] = None,
-            language: Optional[str] = None, cv: Optional[str] = None
-    ) -> None:
-        """Update user's parameters such as username, first_name, language and cv"""
-        query_name = "update_user"
+    async def update_user_language(self, user_id: int, language: str) -> None:
+        """Update user's language"""
+        query_name = "update_user_language"
         query = self._get_query(entity="users", query_name=query_name)
 
         try:
-            await self._pool.execute(
-                query, user_id, username,
-                first_name, language, cv
-            )
+            await self._pool.execute(query, user_id, language)
             self._logger.log_db_info(
-                f"Update user with id={user_id}: username={username}, "
-                f"first_name={first_name}, language={language}, cv={cv}"
+                f"Update user with id={user_id}: language={language}"
+            )
+        except Exception as e:
+            self._logger.log_db_error(query_name=query_name, err=e)
+            raise
+
+    async def update_user_cv(self, user_id: int, cv: Optional[str] = None) -> None:
+        """Update user's cv"""
+        query_name = "update_user_cv"
+        query = self._get_query(entity="users", query_name=query_name)
+
+        try:
+            await self._pool.execute(query, user_id, cv)
+            self._logger.log_db_info(
+                f"Update user with id={user_id}: cv={cv}"
             )
         except Exception as e:
             self._logger.log_db_error(query_name=query_name, err=e)
