@@ -21,7 +21,7 @@ class ChatCleanerMiddleware(BaseMiddleware):
         state: FSMContext = data.get("state")
         if state:
             state_data = await state.get_data()
-            msg_to_delete = state_data.get("messages_to_delete", [])
+            msg_to_delete = state_data.get("messages_to_delete", set())
             if msg_to_delete:
                 bot: Bot = data["bot"]
 
@@ -31,9 +31,9 @@ class ChatCleanerMiddleware(BaseMiddleware):
                     chat_id = event.callback_query.message.chat.id
 
                 try:
-                    await bot.delete_messages(chat_id=chat_id, message_ids=msg_to_delete)
+                    await bot.delete_messages(chat_id=chat_id, message_ids=list(msg_to_delete))
                 except Exception as e:
                     self._logger.log_middleware_error(err=e)
 
-                await state.update_data(messages_to_delete=[])
+                await state.update_data(messages_to_delete=set())
         return await handler(event, data)

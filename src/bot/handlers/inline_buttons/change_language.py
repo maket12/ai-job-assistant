@@ -15,6 +15,7 @@ router = Router()
 @router.callback_query(F.data.startswith("change_language"))
 async def change_language(call: types.CallbackQuery, state: FSMContext, db: Database, user: User):
     msg = None
+
     try:
         new_lang = call.data.split('_')[-1]
         user.language = new_lang
@@ -28,16 +29,20 @@ async def change_language(call: types.CallbackQuery, state: FSMContext, db: Data
             text=MESSAGES[new_lang]["change_language"],
             show_alert=True,
         )
-        await menu(message=call.message, user=user)
+        await menu(message=call.message, state=state, user=user)
     except Exception as e:
         bot_logger.log_handler_error("change_language", e)
         msg = await call.message.answer(text=MESSAGES[user.language]["unknown_error"])
     finally:
-        await state.update_data(messages_to_delete=[msg.message_id] if msg else [])
+        messages_to_delete = (await state.get_data()).get("messages_to_delete", set())
+        if msg:
+            messages_to_delete.add(msg.message_id)
+        await state.update_data(messages_to_delete=messages_to_delete)
 
 @router.callback_query(F.data == "current_language")
 async def current_language(call: types.CallbackQuery, state: FSMContext,user: User):
     msg = None
+
     try:
         await call.answer(
             text=MESSAGES[user.language]["current_language"],
@@ -47,4 +52,7 @@ async def current_language(call: types.CallbackQuery, state: FSMContext,user: Us
         bot_logger.log_handler_error("current_language", e)
         msg = await call.message.answer(text=MESSAGES[user.language]["unknown_error"])
     finally:
-        await state.update_data(messages_to_delete=[msg.message_id] if msg else [])
+        messages_to_delete = (await state.get_data()).get("messages_to_delete", set())
+        if msg:
+            messages_to_delete.add(msg.message_id)
+        await state.update_data(messages_to_delete=messages_to_delete)

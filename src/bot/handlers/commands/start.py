@@ -4,7 +4,7 @@ from aiogram import Router, types
 from aiogram.filters import CommandStart
 from aiogram.fsm.context import FSMContext
 
-from src.bot.keyboard.inline_buttons.buttons import create_main_menu_markup
+from src.bot.handlers.commands.menu import menu
 
 from src.locales.messages import MESSAGES
 from src.config import DEFAULT_LANGUAGE, WELCOME_VIDEO_FID
@@ -23,6 +23,7 @@ async def start(
 ):
     msg = None
     lang = DEFAULT_LANGUAGE
+
     try:
         if user is None:
             await db.users.create_user(
@@ -34,13 +35,15 @@ async def start(
         else:
             lang = user.language
 
-        msg = await message.answer_animation(
+        await message.answer_animation(
             animation=WELCOME_VIDEO_FID,
-            caption=MESSAGES[lang]["welcome"],
-            reply_markup=create_main_menu_markup(current_language=lang)
+            caption=MESSAGES[lang]["welcome"]
         )
+        await menu(message=message, state=state, user=user)
     except Exception as e:
         bot_logger.log_handler_error("start", e)
         msg = await message.answer(text=MESSAGES[lang]["unknown_error"])
     finally:
-        await state.update_data(messages_to_delete=[message.message_id, msg.message_id] if msg else [message.message_id])
+        messages_to_delete = (await state.get_data()).get("messages_to_delete", set())
+        messages_to_delete = messages_to_delete.union([message.message_id, msg.message_id] if msg else [message.message_id])
+        await state.update_data(messages_to_delete=messages_to_delete)

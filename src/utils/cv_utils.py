@@ -18,5 +18,5 @@ def get_cv_path(user_id: int, filename: str) -> Path:
     dir_path.mkdir(parents=True, exist_ok=True)
     return dir_path / filename
 
-def delete_cv(cv_path: Path) -> None:
+def delete_cv(cv_path: Path | str) -> None:
     return os.remove(path=cv_path)

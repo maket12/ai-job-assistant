@@ -3,6 +3,7 @@ from pathlib import Path
 from aiogram import Router, types, F
 from aiogram.fsm.context import FSMContext
 
+from src.bot.handlers.inline_buttons.main_menu import account
 from src.bot.handlers.inline_buttons.account_menu import edit_cv
 from src.bot.keyboard.reply_buttons.buttons import create_back_markup
 from src.bot.keyboard.inline_buttons.buttons import create_delete_cv_markup
@@ -35,7 +36,10 @@ async def upload_cv(call: types.CallbackQuery, state: FSMContext, user: User):
             text=MESSAGES[user.language]["unknown_error"]
         )
     finally:
-        await state.update_data(messages_to_delete=[msg] if msg else [])
+        messages_to_delete = (await state.get_data()).get("messages_to_delete", set())
+        if msg:
+            messages_to_delete.add(msg.message_id)
+        await state.update_data(messages_to_delete=messages_to_delete)
 
 @router.callback_query(F.data == "delete_cv")
 async def delete_cv(call: types.CallbackQuery, state: FSMContext, user: User):
@@ -52,7 +56,10 @@ async def delete_cv(call: types.CallbackQuery, state: FSMContext, user: User):
             text=MESSAGES[user.language]["unknown_error"]
         )
     finally:
-        await state.update_data(messages_to_delete=[msg] if msg else [])
+        messages_to_delete = (await state.get_data()).get("messages_to_delete", set())
+        if msg:
+            messages_to_delete.add(msg.message_id)
+        await state.update_data(messages_to_delete=messages_to_delete)
 
 @router.callback_query(F.data == "delete_confirm")
 async def delete_confirm(call: types.CallbackQuery, state: FSMContext, db: Database, user: User):
@@ -74,18 +81,26 @@ async def delete_confirm(call: types.CallbackQuery, state: FSMContext, db: Datab
             text=MESSAGES[user.language]["unknown_error"]
         )
     finally:
-        await state.update_data(messages_to_delete=[msg.message_id] if msg else [])
+        messages_to_delete = (await state.get_data()).get("messages_to_delete", set())
+        if msg:
+            messages_to_delete.add(msg.message_id)
+        await state.update_data(messages_to_delete=messages_to_delete)
+
+        await account(call=call, state=state, user=user)
 
 @router.callback_query(F.data == "delete_back")
 async def delete_back(call: types.CallbackQuery, state: FSMContext, user: User):
     msg = None
 
     try:
-        await edit_cv(message=call.message, user=user)
+        await edit_cv(call=call, user=user)
     except Exception as e:
         bot_logger.log_handler_error("delete_back", e)
         msg = await call.message.answer(
             text=MESSAGES[user.language]["unknown_error"]
         )
     finally:
-        await state.update_data(messages_to_delete=[msg.message_id] if msg else [])
+        messages_to_delete = (await state.get_data()).get("messages_to_delete", set())
+        if msg:
+            messages_to_delete.add(msg.message_id)
+        await state.update_data(messages_to_delete=messages_to_delete)

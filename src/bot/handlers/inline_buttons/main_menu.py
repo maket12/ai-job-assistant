@@ -5,7 +5,6 @@ from src.bot.keyboard.inline_buttons.buttons import create_account_menu_markup
 
 from src.locales.messages import MESSAGES
 
-from src.services.database.main import Database
 from src.services.database.models import User
 from src.services.logs.logger import bot_logger
 
@@ -13,7 +12,7 @@ router = Router()
 
 
 @router.callback_query(F.data == "account")
-async def account(call: types.CallbackQuery, state: FSMContext, db: Database, user: User):
+async def account(call: types.CallbackQuery, state: FSMContext, user: User):
     msg = None
 
     try:
@@ -29,6 +28,7 @@ async def account(call: types.CallbackQuery, state: FSMContext, db: Database, us
         bot_logger.log_handler_error("account", e)
         msg = await call.message.answer(text=MESSAGES[user.language]["unknown_error"])
     finally:
-        await state.update_data(
-            messages_to_delete=[msg.message_id] if msg else []
-        )
+        messages_to_delete = (await state.get_data()).get("messages_to_delete", set())
+        if msg:
+            messages_to_delete.add(msg.message_id)
+        await state.update_data(messages_to_delete=messages_to_delete)

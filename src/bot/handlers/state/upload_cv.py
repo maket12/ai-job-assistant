@@ -35,6 +35,11 @@ async def get_cv(message: types.Message, state: FSMContext, db: Database, user: 
             )
             return
 
+        # Delete previous CV if exists
+        if user.cv_path:
+            delete_cv(cv_path=user.cv_path)
+
+        # Download new CV
         cv_path = get_cv_path(user_id=user.id, filename=message.document.file_name)
 
         await message.bot.download(
@@ -52,9 +57,6 @@ async def get_cv(message: types.Message, state: FSMContext, db: Database, user: 
             cv_file_id=user.cv_file_id
         )
 
-        # Delete previous CV
-        delete_cv(cv_path=cv_path)
-
         msg = await message.answer(
             text=MESSAGES[user.language]["cv_uploaded"],
             reply_markup=ReplyKeyboardRemove()
@@ -64,5 +66,9 @@ async def get_cv(message: types.Message, state: FSMContext, db: Database, user: 
         await message.answer(text=MESSAGES[user.language]["unknown_error"])
     finally:
         await state.clear()
-        await state.update_data(messages_to_delete=[message.message_id, msg.message_id] if msg else [message.message_id])
+
+        messages_to_delete = (await state.get_data()).get("messages_to_delete", set())
+        messages_to_delete = messages_to_delete.union([message.message_id, msg.message_id] if msg else [message.message_id])
+        await state.update_data(messages_to_delete=messages_to_delete)
+
         await menu(message=message, state=state, user=user)

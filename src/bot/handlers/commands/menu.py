@@ -24,4 +24,6 @@ async def menu(message: types.Message, state: FSMContext, user: User):
         bot_logger.log_handler_error("menu", e)
         msg = await message.answer(text=MESSAGES[user.language]["unknown_error"])
     finally:
-        await state.update_data(messages_to_delete=[message.message_id, msg.message_id] if msg else [message.message_id])
+        messages_to_delete = (await state.get_data()).get("messages_to_delete", set())
+        messages_to_delete = messages_to_delete.union([message.message_id, msg.message_id] if msg else [message.message_id])
+        await state.update_data(messages_to_delete=messages_to_delete)
