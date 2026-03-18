@@ -18,7 +18,7 @@ CREATE TABLE IF NOT EXISTS user_settings (
     grade VARCHAR(20),  -- Intern/Junior/Senior and etc
     job_type TEXT,  -- Such as remote, contract, etc.
     location TEXT,  -- If specified - country/city
-    updated_at TIMESTAMP WITH TIME ZONE
+    updated_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP
 );
 
 CREATE INDEX IF NOT EXISTS idx_users_username ON users(username);

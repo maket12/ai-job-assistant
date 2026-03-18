@@ -34,7 +34,7 @@ class UserRepository(BaseRepository):
             self._logger.log_db_error(query_name=query_name, err=e)
             raise
 
-        return User(**dict(row)) if row else None
+        return User.model_validate(dict(row)) if row else None
 
     async def check_user_exists(self, user_id: int) -> bool:
         """Returns True if user with specified id exists in database and False otherwise"""
@@ -103,5 +103,4 @@ class UserRepository(BaseRepository):
             self._logger.log_db_error(query_name=query_name, err=e)
             raise
 
-        return [User(**dict(row)) for row in rows]
-
+        return [User.model_validate(dict(row)) for row in rows]
