@@ -9,9 +9,9 @@ def get_main_router() -> Router:
     router = Router()
     router.include_routers(
         get_commands_router(),
-        get_messages_router(),
         # get_reply_buttons_router(),
         get_inline_buttons_router(),
-        get_state_router()
+        get_state_router(),
+        get_messages_router(),
     )
     return router
