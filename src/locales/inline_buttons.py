@@ -20,6 +20,10 @@ INLINE_BUTTONS = {
         "delete_cv": [
             "Confirm✅",
             "◀️Back"
+        ],
+
+        "search_menu": [
+
         ]
     },
     "ru": {
@@ -33,7 +37,7 @@ INLINE_BUTTONS = {
             "Редактировать резюме📝"
         ],
 
-        "language_btn": "Russian🇷🇺",
+        "language_btn": "Русский🇷🇺",
 
         "edit_cv": [
             "Изменить📥",

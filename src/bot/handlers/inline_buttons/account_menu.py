@@ -18,7 +18,7 @@ async def change_language(call: types.CallbackQuery, state: FSMContext, user: Us
     msg = None
 
     try:
-        await language(message=call.message, user=user)
+        await language(message=call.message, state=state, user=user)
     except Exception as e:
         bot_logger.log_handler_error("change_language", e)
         msg = await call.message.answer(

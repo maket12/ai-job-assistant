@@ -37,6 +37,10 @@ MESSAGES = {
 
         "cv_deleted": "CV successfully deleted.",
 
+        "search_info"
+        
+        "search_not_available": "Search is not available.\nUpload CV first to get access.",
+
         "unknown": "I am really looking forward to help you, but, unfortunately, i can't answer on this question "
                    "yet😔.\n"
                    "Use command /help to know more what i can do!",
@@ -45,6 +49,14 @@ MESSAGES = {
                          "Try to restart the bot or contact help via /help command.",
     },
     "ru": {
+        "welcome": "Привет! Я <b>Kiko</b> — твой персональный ИИ-помощник по поиску работы.\n"
+                   "Моя цель — помочь тебе найти идеальную вакансию.\n"
+                   "Я анализирую агрегаторы и присылаю подходящие предложения вместе с сопроводительным письмом! 🚀\n",
+
+        "language": "Выбери один из доступных языков с помощью кнопок ниже 👇",
+
+        "menu": "Ты находишься в главном меню. Выбери нужный раздел 👇",
+
         "account_info": (
             "👤 <b>Данные аккаунта</b>"
             "\n➖➖➖➖➖➖➖➖\n"
@@ -53,6 +65,33 @@ MESSAGES = {
             "🌍 Язык: {lang}\n"
             "📄 Резюме: {cv_set}\n"
             "📅 Регистрация: {created_at}"
-        )
+        ),
+
+        "change_language": "Язык успешно изменен на русский.",
+
+        "current_language": "Этот язык уже выбран.",
+
+        "edit_cv": "Что ты хочешь сделать с резюме?",
+
+        "current_cv": "Твое текущее резюме:",
+
+        "upload_cv": "Пришли мне файл резюме в формате .pdf, .docx, .doc или .txt:",
+
+        "cv_not_file": "Резюме должно быть файлом с одним из разрешенных расширений: <i>.pdf</i>, <i>.docx</i>, <i>.doc</i>, <i>.txt</i>",
+
+        "cv_uploaded": "Резюме успешно загружено. ✅",
+
+        "delete_cv": "Ты уверен, что хочешь удалить резюме?\n"
+                     "Обрати внимание: <b>ты перестанешь получать новые вакансии</b>.",
+
+        "cv_deleted": "Резюме успешно удалено.",
+
+        "search_not_available": "Поиск недоступен.\nСначала загрузи резюме, чтобы получить доступ к вакансиям.",
+
+        "unknown": "Я очень хочу тебе помочь, но, к сожалению, пока не понимаю этот вопрос 😔.\n"
+                   "Используй команду /help, чтобы узнать, что я умею!",
+
+        "unknown_error": "Произошла какая-то ошибка! 😵‍💫\n"
+                         "Попробуй перезапустить бота или обратись в поддержку через /help.",
     }
 }

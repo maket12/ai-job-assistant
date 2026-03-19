@@ -15,7 +15,7 @@ from src.services.database.main import Database
 from src.services.database.models import User
 from src.services.logs.logger import bot_logger
 
-from src.utils.cv_utils import delete_cv as delete_cv_util
+from src.bot.utils.cv_utils import delete_cv as delete_cv_util
 
 router = Router()
 

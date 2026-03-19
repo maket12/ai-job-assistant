@@ -8,7 +8,7 @@ from src.bot.state.state_init import UploadCV
 from src.locales.messages import MESSAGES
 from src.locales.reply_buttons import REPLY_BUTTONS
 
-from src.utils.cv_utils import cv_is_correct, get_cv_path, delete_cv
+from src.bot.utils.cv_utils import cv_is_correct, get_cv_path, delete_cv
 
 from src.services.database.main import Database
 from src.services.database.models import User
