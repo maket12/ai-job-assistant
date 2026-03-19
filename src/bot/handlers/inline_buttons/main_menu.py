@@ -11,6 +11,25 @@ from src.services.logs.logger import bot_logger
 router = Router()
 
 
+@router.callback_query(F.data == "search")
+async def search(call: types.CallbackQuery, state: FSMContext, user: User):
+    msg = None
+
+    try:
+        if not user.cv_file_id:
+            await call.answer(text=MESSAGES[user.language]["search_not_available"])
+            return
+
+
+    except Exception as e:
+        bot_logger.log_handler_error("search", e)
+        msg = await call.message.answer(text=MESSAGES[user.language]["unknown_error"])
+    finally:
+        messages_to_delete = (await state.get_data()).get("messages_to_delete", set())
+        if msg:
+            messages_to_delete.add(msg.message_id)
+        await state.update_data(messages_to_delete=messages_to_delete)
+
 @router.callback_query(F.data == "account")
 async def account(call: types.CallbackQuery, state: FSMContext, user: User):
     msg = None
