@@ -37,7 +37,19 @@ MESSAGES = {
 
         "cv_deleted": "CV successfully deleted.",
 
-        "search_info"
+        "search_info": (
+            "<b>{title} at {company}</b>"
+            "\n➖➖➖➖➖➖➖➖\n"
+            "Working conditions: {salary}, {location}\n"
+            "Match score: {match_score}\n"
+            "AI summary: {summary}\n"
+        ),
+
+        "search_details": "Description:\n",
+
+        "search_cv": "Generated CV:\n",
+
+        "search_source": "Link to job posting:\n",
         
         "search_not_available": "Search is not available.\nUpload CV first to get access.",
 
@@ -47,6 +59,9 @@ MESSAGES = {
 
         "unknown_error": "Something wrong just happened!\n"
                          "Try to restart the bot or contact help via /help command.",
+
+        "unknown_user": "Sorry, but it seems that you have no profile.\n"
+                        "Create one with /start command.",
     },
     "ru": {
         "welcome": "Привет! Я <b>Kiko</b> — твой персональный ИИ-помощник по поиску работы.\n"
@@ -86,6 +101,20 @@ MESSAGES = {
 
         "cv_deleted": "Резюме успешно удалено.",
 
+        "search_info": (
+            "<b>{title} в {company}</b>"
+            "\n➖➖➖➖➖➖➖➖\n"
+            "Условия: {salary}, {location}\n"
+            "Подходит на: {match_score}\n"
+            "Мнение ИИ: {summary}\n"
+        ),
+
+        "search_details": "Описание:\n",
+
+        "search_cv": "Сгенерированное CV:\n",
+
+        "search_source": "Ссылка на вакансию:\n",
+
         "search_not_available": "Поиск недоступен.\nСначала загрузи резюме, чтобы получить доступ к вакансиям.",
 
         "unknown": "Я очень хочу тебе помочь, но, к сожалению, пока не понимаю этот вопрос 😔.\n"
@@ -93,5 +122,8 @@ MESSAGES = {
 
         "unknown_error": "Произошла какая-то ошибка! 😵‍💫\n"
                          "Попробуй перезапустить бота или обратись в поддержку через /help.",
+        
+        "unknown_user": "Кажется, у вас нет профиля.\n"
+                        "Создайте его с помощью команды /start",
     }
 }
