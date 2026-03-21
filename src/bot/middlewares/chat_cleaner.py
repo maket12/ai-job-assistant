@@ -22,6 +22,9 @@ class ChatCleanerMiddleware(BaseMiddleware):
         if state:
             state_data = await state.get_data()
             msg_to_delete = state_data.get("messages_to_delete", set())
+
+            bot_logger.warning(msg_to_delete)
+
             if msg_to_delete:
                 bot: Bot = data["bot"]
 
@@ -35,5 +38,5 @@ class ChatCleanerMiddleware(BaseMiddleware):
                 except Exception as e:
                     self._logger.log_middleware_error(err=e)
 
-                await state.update_data(messages_to_delete=set())
+            await state.update_data(messages_to_delete=set())
         return await handler(event, data)

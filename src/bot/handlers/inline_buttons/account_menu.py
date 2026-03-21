@@ -26,7 +26,7 @@ async def change_language(call: types.CallbackQuery, state: FSMContext, user: Us
         )
     finally:
         await state.update_data(
-            messages_to_delete=[msg.message_id] if msg else []
+            messages_to_delete=set([msg.message_id] if msg else [])
         )
 
 @router.callback_query(F.data == "edit_cv")

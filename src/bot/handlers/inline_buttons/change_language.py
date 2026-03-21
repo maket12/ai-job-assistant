@@ -53,6 +53,7 @@ async def current_language(call: types.CallbackQuery, state: FSMContext,user: Us
         msg = await call.message.answer(text=MESSAGES[user.language]["unknown_error"])
     finally:
         messages_to_delete = (await state.get_data()).get("messages_to_delete", set())
+        bot_logger.warning(messages_to_delete)
         if msg:
             messages_to_delete.add(msg.message_id)
         await state.update_data(messages_to_delete=messages_to_delete)
