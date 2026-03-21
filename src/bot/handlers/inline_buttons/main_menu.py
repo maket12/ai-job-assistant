@@ -2,17 +2,19 @@ from aiogram import Router, types, F
 from aiogram.fsm.context import FSMContext
 
 from src.bot.keyboard.inline_buttons.buttons import create_account_menu_markup
+from src.bot.keyboard.inline_buttons.buttons import create_search_markup
 
 from src.locales.messages import MESSAGES
 
 from src.services.database.models import User
+from src.services.database.main import Database
 from src.services.logs.logger import bot_logger
 
 router = Router()
 
 
 @router.callback_query(F.data == "search")
-async def search(call: types.CallbackQuery, state: FSMContext, user: User):
+async def search(call: types.CallbackQuery, db: Database, state: FSMContext, user: User):
     msg = None
 
     try:
@@ -20,6 +22,17 @@ async def search(call: types.CallbackQuery, state: FSMContext, user: User):
             await call.answer(text=MESSAGES[user.language]["search_not_available"])
             return
 
+        if not user.search_settings_id:
+            await call.answer(text=MESSAGES[user.language]["search_not_available"])
+            return
+
+        msg = await call.message.answer(
+            text=MESSAGES[user.language]["search_info"].format(
+                skills="skills", grade="grade",
+                job_type="job_type", location="location"
+            ),
+            reply_markup=create_search_markup(current_language=user.language)
+        )
 
     except Exception as e:
         bot_logger.log_handler_error("search", e)

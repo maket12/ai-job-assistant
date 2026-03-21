@@ -88,6 +88,23 @@ def create_delete_cv_markup(current_language: str = DEFAULT_LANGUAGE) -> InlineK
     ])
     return markup
 
+def create_search_markup(current_language: str = DEFAULT_LANGUAGE) -> InlineKeyboardMarkup:
+    markup = InlineKeyboardMarkup(inline_keyboard=[
+        [
+            InlineKeyboardButton(
+                text=INLINE_BUTTONS[current_language]["search"][0],
+                callback_data="vacancies",
+            )
+        ],
+        [
+            InlineKeyboardButton(
+                text=INLINE_BUTTONS[current_language]["search"][1],
+                callback_data="change_settings",
+            )
+        ]
+    ])
+    return markup
+
 def create_vacancies_markup(current_language: str = DEFAULT_LANGUAGE) -> InlineKeyboardMarkup:
     markup = InlineKeyboardMarkup(inline_keyboard=[
         [

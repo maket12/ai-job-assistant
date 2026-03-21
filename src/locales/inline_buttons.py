@@ -32,6 +32,11 @@ INLINE_BUTTONS = {
             "Generate CV",
             "Go to job posting",
             "◀️Back to page"
+        ],
+
+        "search": [
+            "Available vacancies",
+            "Change search settings",
         ]
     },
     "ru": {
@@ -63,6 +68,11 @@ INLINE_BUTTONS = {
             "Сгенерировать CV",
             "Перейти к вакансии",
             "◀️Вернуться к странице"
+        ],
+
+        "search": [
+            "Доступные вакансии",
+            "Поменять конфигурацию поиска",
         ]
     }
 }
