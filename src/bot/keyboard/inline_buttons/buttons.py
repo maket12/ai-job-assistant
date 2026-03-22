@@ -87,3 +87,107 @@ def create_delete_cv_markup(current_language: str = DEFAULT_LANGUAGE) -> InlineK
         ]
     ])
     return markup
+
+def create_search_markup(current_language: str = DEFAULT_LANGUAGE) -> InlineKeyboardMarkup:
+    markup = InlineKeyboardMarkup(inline_keyboard=[
+        [
+            InlineKeyboardButton(
+                text=INLINE_BUTTONS[current_language]["search"][0],
+                callback_data="vacancies",
+            )
+        ],
+        [
+            InlineKeyboardButton(
+                text=INLINE_BUTTONS[current_language]["search"][1],
+                callback_data="change_settings",
+            )
+        ]
+    ])
+    return markup
+
+def create_vacancies_markup(current_language: str = DEFAULT_LANGUAGE, url: str = "https://hh.ru") -> InlineKeyboardMarkup:
+    markup = InlineKeyboardMarkup(inline_keyboard=[
+        [
+            InlineKeyboardButton(
+                text=INLINE_BUTTONS[current_language]["vacancies"][0],
+                callback_data="refuse",
+            )
+        ],
+        [
+            InlineKeyboardButton(
+                text=INLINE_BUTTONS[current_language]["vacancies"][1],
+                callback_data="details",
+            )
+        ],
+        [
+            InlineKeyboardButton(
+                text=INLINE_BUTTONS[current_language]["vacancies"][2],
+                callback_data="create_cv",
+            )
+        ],
+        [
+            InlineKeyboardButton(
+                text=INLINE_BUTTONS[current_language]["vacancies"][3],
+                url=url,
+            )
+        ]
+    ])
+    return markup
+
+def create_vacancies_details_markup(current_language: str = DEFAULT_LANGUAGE, url: str = "https://hh.ru") -> InlineKeyboardMarkup:
+    markup = InlineKeyboardMarkup(inline_keyboard=[
+        [
+            InlineKeyboardButton(
+                text=INLINE_BUTTONS[current_language]["vacancies"][0],
+                callback_data="refuse",
+            )
+        ],
+        [
+            InlineKeyboardButton(
+                text=INLINE_BUTTONS[current_language]["vacancies"][4],
+                callback_data="return",
+            )
+        ],
+        [
+            InlineKeyboardButton(
+                text=INLINE_BUTTONS[current_language]["vacancies"][2],
+                callback_data="create_cv",
+            )
+        ],
+        [
+            InlineKeyboardButton(
+                text=INLINE_BUTTONS[current_language]["vacancies"][3],
+                url=url,
+            )
+        ]
+    ])
+    return markup
+
+def create_vacancies_cv_markup(current_language: str = DEFAULT_LANGUAGE, url: str = "https://hh.ru") -> InlineKeyboardMarkup:
+    markup = InlineKeyboardMarkup(inline_keyboard=[
+        [
+            InlineKeyboardButton(
+                text=INLINE_BUTTONS[current_language]["vacancies"][0],
+                callback_data="refuse",
+            )
+        ],
+        [
+            InlineKeyboardButton(
+                text=INLINE_BUTTONS[current_language]["vacancies"][1],
+                callback_data="details",
+            )
+        ],
+        [
+            InlineKeyboardButton(
+                text=INLINE_BUTTONS[current_language]["vacancies"][4],
+                callback_data="return",
+            )
+        ],
+        [
+            InlineKeyboardButton(
+                text=INLINE_BUTTONS[current_language]["vacancies"][3],
+                url=url,
+            )
+        ]
+    ])
+    return markup

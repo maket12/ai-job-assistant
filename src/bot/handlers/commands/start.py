@@ -32,13 +32,14 @@ async def start(
                 first_name=message.from_user.first_name,
                 language=DEFAULT_LANGUAGE
             )
+
+            await message.answer_animation(
+                animation=WELCOME_VIDEO_FID,
+                caption=MESSAGES[lang]["welcome"]
+            )
         else:
             lang = user.language
 
-        await message.answer_animation(
-            animation=WELCOME_VIDEO_FID,
-            caption=MESSAGES[lang]["welcome"]
-        )
         await menu(message=message, state=state, user=user)
     except Exception as e:
         bot_logger.log_handler_error("start", e)
