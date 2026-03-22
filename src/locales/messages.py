@@ -151,5 +151,81 @@ MESSAGES = {
 
         "unknown_user": "Кажется, у вас нет профиля.\n"
                         "Создайте его с помощью команды /start",
+    },
+    "zh": {
+        "welcome": "你好！我是 <b>Kiko</b> — 你的个人人工智能求职助手。\n"
+                   "我的目标是帮助你寻找工作。\n"
+                   "我会分析职位发布平台，并为你发送带有求职信的相关职位！\n",
+
+        "language": "请使用下面的按钮选择一种支持的语言进行切换 👇",
+
+        "menu": "你目前在主菜单。请选择以下选项之一 👇",
+
+        "account_info": (
+            "👤 <b>账户详情</b>"
+            "\n➖➖➖➖➖➖➖➖\n"
+            "🆔 ID: {id}\n"
+            "📌 姓名: {name}\n"
+            "🌍 语言: {lang}\n"
+            "📄 简历: {cv_set}\n"
+            "📅 注册时间: {created_at}"
+        ),
+
+        "change_language": "语言已成功更改为中文。",
+
+        "current_language": "你不能选择当前已在使用的语言。",
+
+        "edit_cv": "你想做什么？",
+
+        "current_cv": "这是你当前的简历：",
+
+        "upload_cv": "请向我发送扩展名为 .pdf / .docx / .doc / .txt 的简历文件：",
+
+        "cv_not_file": "简历必须是以下允许的扩展名之一的文件：<i>.pdf</i>, <i>.docx</i>, <i>.doc</i>, <i>.txt</i>",
+
+        "cv_uploaded": "简历上传成功。✅",
+
+        "delete_cv": "你确定要删除你的简历吗？\n"
+                     "请注意，删除后<b>你将不再收到新职位推送</b>。",
+
+        "cv_deleted": "简历已成功删除。",
+
+        "vacancies_info": (
+            "<b>{company} 的 {title}</b>"
+            "\n➖➖➖➖➖➖➖➖\n"
+            "工作条件: {salary}, {location}\n"
+            "匹配度: {match_score}\n"
+            "AI 总结: {summary}\n"
+        ),
+
+        "search_info": (
+            "🔍 搜索设置:"
+            "\n➖➖➖➖➖➖➖➖\n"
+            "🤹 技能: {skills}\n"
+            "📊 等级: {grade}\n"
+            "🌐 工作类型: {job_type}\n"
+            "🌆 搜索地点: {location}\n"
+        ),
+
+        "search_details": "职位描述：\n{description}",
+
+        "search_cv": "生成的简历/求职信：{cv}\n",
+
+        "search_not_available": "搜索不可用。\n请先上传简历以获得访问权限。",
+
+        "unknown": "我很想帮助你，但不幸的是，我暂时还无法回答这个问题 😔。\n"
+                   "使用 /help 命令了解更多我可以做的事情！",
+
+        "unknown_error": "刚刚发生了一些错误！\n"
+                         "请尝试重启机器人或通过 /help 命令联系帮助。",
+
+        "setup_skills": "🤹 请指定你的技能（例如：Python, SQL, Docker）：",
+        "setup_grade": "📊 你的等级/水平是什么？（例如：初级, 中级, 高级）：",
+        "setup_job_type": "🌐 首选工作类型？（例如：远程, 全职）：",
+        "setup_location": "🌆 首选地点？（例如：中国, 上海, 全球）：",
+        "setup_complete": "搜索配置保存成功！🎉",
+
+        "unknown_user": "抱歉，看来你还没有创建个人资料。\n"
+                        "请使用 /start 命令创建一个。",
     }
 }

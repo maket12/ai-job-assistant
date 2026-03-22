@@ -4,5 +4,8 @@ REPLY_BUTTONS = {
     },
     "ru": {
         "back_button": "◀️Назад",
+    },
+    "zh": {
+        "back_button": "◀️返回",
     }
 }

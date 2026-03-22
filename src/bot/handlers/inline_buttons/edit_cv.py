@@ -93,7 +93,7 @@ async def delete_back(call: types.CallbackQuery, state: FSMContext, user: User):
     msg = None
 
     try:
-        await edit_cv(call=call, user=user)
+        await edit_cv(call=call, state=state, user=user)
     except Exception as e:
         bot_logger.log_handler_error("delete_back", e)
         msg = await call.message.answer(
