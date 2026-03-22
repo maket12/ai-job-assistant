@@ -3,6 +3,7 @@ from aiogram.fsm.context import FSMContext
 
 from src.bot.keyboard.inline_buttons.buttons import create_account_menu_markup
 from src.bot.keyboard.inline_buttons.buttons import create_search_markup
+from src.bot.handlers.state.setup_search import start_setup_search
 
 from src.locales.messages import MESSAGES
 
@@ -22,14 +23,17 @@ async def search(call: types.CallbackQuery, db: Database, state: FSMContext, use
             await call.answer(text=MESSAGES[user.language]["search_not_available"])
             return
 
-        if not user.search_settings_id:
-            await call.answer(text=MESSAGES[user.language]["search_not_available"])
+        settings = await db.user_settings.get_user_settings(user.id)
+        if not settings:
+            await start_setup_search(call.message, state, user)
             return
+
+        skills_str = ", ".join(s.name for s in settings.skills) if settings.skills else "Not specified"
 
         msg = await call.message.answer(
             text=MESSAGES[user.language]["search_info"].format(
-                skills="skills", grade="grade",
-                job_type="job_type", location="location"
+                skills=skills_str, grade=settings.grade,
+                job_type=settings.job_type, location=settings.location
             ),
             reply_markup=create_search_markup(current_language=user.language)
         )

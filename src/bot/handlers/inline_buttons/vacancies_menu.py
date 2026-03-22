@@ -6,7 +6,7 @@ from src.bot.keyboard.inline_buttons.buttons import (
     create_vacancies_markup,
     create_vacancies_details_markup,
     create_vacancies_cv_markup,
-    create_vacancies_source_markup
+    create_search_markup
 )
 
 from src.locales.messages import MESSAGES
@@ -24,14 +24,16 @@ async def refuse_vacancy(call: types.CallbackQuery, state: FSMContext, user: Use
 
     try:
         msg = await call.message.answer(
-            text=MESSAGES[user.language]["search_info"],
-            reply_markup=create_vacancies_markup(current_language=user.language)
+            text=MESSAGES[user.language]["vacancies_info"].format(
+                title="Backend Developer", company="Startup Inc",
+                salary="$110k", location="New York",
+                match_score="88%", summary="Good match."
+            ),
+            reply_markup=create_vacancies_markup(current_language=user.language, url="https://hh.ru")
         )
     except Exception as e:
         bot_logger.log_handler_error("refuse", e)
-        msg = await call.message.answer(
-            text=MESSAGES[user.language]["unknown_error"]
-        )
+        msg = await call.message.answer(text=MESSAGES[user.language]["unknown_error"])
     finally:
         messages_to_delete = (await state.get_data()).get("messages_to_delete", set())
         messages_to_delete = messages_to_delete.union([call.message.message_id, msg.message_id] if msg else [call.message.message_id])
@@ -43,14 +45,14 @@ async def vacancy_details(call: types.CallbackQuery, state: FSMContext, user: Us
     
     try:
         msg = await call.message.answer(
-            text=MESSAGES[user.language]["search_details"],
-            reply_markup=create_vacancies_details_markup(current_language=user.language)
+            text=MESSAGES[user.language]["search_details"].format(
+                description="Описание описание описание"
+            ),
+            reply_markup=create_vacancies_details_markup(current_language=user.language, url="https://hh.ru")
         )
     except Exception as e:
         bot_logger.log_handler_error("details", e)
-        msg = await call.message.answer(
-            text=MESSAGES[user.language]["unknown_error"]
-        )
+        msg = await call.message.answer(text=MESSAGES[user.language]["unknown_error"])
     finally:
         messages_to_delete = (await state.get_data()).get("messages_to_delete", set())
         if msg:
@@ -63,34 +65,14 @@ async def vacancy_create_cv(call: types.CallbackQuery, state: FSMContext, user: 
 
     try:
         msg = await call.message.answer(
-            text=MESSAGES[user.language]["search_cv"],
-            reply_markup=create_vacancies_cv_markup(current_language=user.language)
+            text=MESSAGES[user.language]["search_cv"].format(
+                description="Сгенеренное CV Сгенеренное CV Сгенеренное CV"
+            ),
+            reply_markup=create_vacancies_cv_markup(current_language=user.language, url="https://hh.ru")
         )
     except Exception as e:
         bot_logger.log_handler_error("create_cv", e)
-        msg = await call.message.answer(
-            text=MESSAGES[user.language]["unknown_error"]
-        )
-    finally:
-        messages_to_delete = (await state.get_data()).get("messages_to_delete", set())
-        if msg:
-            messages_to_delete = messages_to_delete.union([msg.message_id])
-        await state.update_data(messages_to_delete=messages_to_delete)
-
-@router.callback_query(F.data == "check_source")
-async def vacancy_check_source(call: types.CallbackQuery, state: FSMContext, user: User):
-    msg = None
-
-    try:
-        msg = await call.message.answer(
-            text=MESSAGES[user.language]["search_source"],
-            reply_markup=create_vacancies_source_markup(current_language=user.language)
-        )
-    except Exception as e:
-        bot_logger.log_handler_error("check_source", e)
-        msg = await call.message.answer(
-            text=MESSAGES[user.language]["unknown_error"]
-        )
+        msg = await call.message.answer(text=MESSAGES[user.language]["unknown_error"])
     finally:
         messages_to_delete = (await state.get_data()).get("messages_to_delete", set())
         if msg:
@@ -98,19 +80,23 @@ async def vacancy_check_source(call: types.CallbackQuery, state: FSMContext, use
         await state.update_data(messages_to_delete=messages_to_delete)
 
 @router.callback_query(F.data == "return")
-async def vacancy_return(call: types.CallbackQuery, state: FSMContext, user: User):
+async def vacancy_return(call: types.CallbackQuery, db: Database, state: FSMContext, user: User):
     msg = None
 
     try:
+        settings = await db.user_settings.get_user_settings(user.id)
+        skills_str = ", ".join(s.name for s in settings.skills) if settings and settings.skills else "Not specified"
         msg = await call.message.answer(
-            text=MESSAGES[user.language]["search_info"],
-            reply_markup=create_vacancies_markup(current_language=user.language)
+            text=MESSAGES[user.language]["vacancies_info"].format(
+                title="Backend Developer", company="Startup Inc",
+                salary="$110k", location="New York",
+                match_score="88%", summary="Good match."
+            ),
+            reply_markup=create_vacancies_markup(current_language=user.language, url="https://hh.ru")
         )
     except Exception as e:
         bot_logger.log_handler_error("return", e)
-        msg = await call.message.answer(
-            text=MESSAGES[user.language]["unknown_error"]
-        )
+        msg = await call.message.answer(text=MESSAGES[user.language]["unknown_error"])
     finally:
         messages_to_delete = (await state.get_data()).get("messages_to_delete", set())
         if msg:

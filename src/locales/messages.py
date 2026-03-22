@@ -46,19 +46,17 @@ MESSAGES = {
         ),
 
         "search_info": (
-            "Search settings:"
+            "🔍 Search settings:"
             "\n➖➖➖➖➖➖➖➖\n"
-            "Skills: {skills}\n"
-            "Grade: {grade}\n"
-            "Job type: {job_type}\n"
-            "Location of search: {location}\n"
+            "🤹 Skills: {skills}\n"
+            "📊 Grade: {grade}\n"
+            "🌐 Job type: {job_type}\n"
+            "🌆 Location of search: {location}\n"
         ),
 
-        "search_details": "Description:\n",
+        "search_details": "Description: {description}\n",
 
-        "search_cv": "Generated CV:\n",
-
-        "search_source": "Link to job posting:\n",
+        "search_cv": "Generated CV: {cv}\n",
         
         "search_not_available": "Search is not available.\nUpload CV first to get access.",
 
@@ -69,10 +67,10 @@ MESSAGES = {
         "unknown_error": "Something wrong just happened!\n"
                          "Try to restart the bot or contact help via /help command.",
 
-        "setup_skills": "Please specify your skills (e.g., Python, SQL, Docker):",
-        "setup_grade": "What is your grade/level? (e.g., Junior, Middle, Senior):",
-        "setup_job_type": "Preferred job type? (e.g., Remote, Full-time):",
-        "setup_location": "Preferred location? (e.g., USA, London, Worldwide):",
+        "setup_skills": "🤹 Please specify your skills (e.g., Python, SQL, Docker):",
+        "setup_grade": "📊 What is your grade/level? (e.g., Junior, Middle, Senior):",
+        "setup_job_type": "🌐 Preferred job type? (e.g., Remote, Full-time):",
+        "setup_location": "🌆 Preferred location? (e.g., USA, London, Worldwide):",
         "setup_complete": "Search configuration saved successfully! 🎉",
         
         "unknown_user": "Sorry, but it seems that you have no profile.\n"
@@ -125,19 +123,17 @@ MESSAGES = {
         ),
 
         "search_info": (
-            "Ваши параметры поиска:"
+            "🔍 Ваши параметры поиска:"
             "\n➖➖➖➖➖➖➖➖\n"
-            "Умения: {skills}\n"
-            "Уровень: {grade}\n"
-            "Формат работы: {job_type}\n"
-            "Локация для поиска: {location}\n"
+            "🤹 Умения: {skills}\n"
+            "📊 Уровень: {grade}\n"
+            "🌐 Формат работы: {job_type}\n"
+            "🌆 Локация для поиска: {location}\n"
         ),
 
-        "search_details": "Описание:\n",
+        "search_details": "Описание: {description}\n",
 
-        "search_cv": "Сгенерированное CV:\n",
-
-        "search_source": "Ссылка на вакансию:\n",
+        "search_cv": "Сгенерированное CV: {cv}\n",
 
         "search_not_available": "Поиск недоступен.\nСначала загрузи резюме, чтобы получить доступ к вакансиям.",
 
@@ -147,16 +143,10 @@ MESSAGES = {
         "unknown_error": "Произошла какая-то ошибка! 😵‍💫\n"
                          "Попробуй перезапустить бота или обратись в поддержку через /help.",
         
-        "setup_skills": "Укажите ваши навыки (например, Python, SQL, Docker):",
-        "setup_grade": "Укажите ваш уровень (например, Junior, Middle, Senior):",
-        "setup_job_type": "Предпочтительный формат работы? (например, Удаленно, Полный день):",
-        "setup_location": "Предпочтительная локация? (например, Москва, Мир):",
-        "setup_complete": "Конфигурация поиска успешно сохранена! 🎉",
-
-        "setup_skills": "Укажите ваши навыки (например, Python, SQL, Docker):",
-        "setup_grade": "Укажите ваш уровень (например, Junior, Middle, Senior):",
-        "setup_job_type": "Предпочтительный формат работы? (например, Удаленно, Полный день):",
-        "setup_location": "Предпочтительная локация? (например, Москва, Мир):",
+        "setup_skills": "🤹 Укажите ваши навыки (например, Python, SQL, Docker):",
+        "setup_grade": "📊 Укажите ваш уровень (например, Junior, Middle, Senior):",
+        "setup_job_type": "🌐 Предпочтительный формат работы? (например, Удаленно, Полный день):",
+        "setup_location": "🌆 Предпочтительная локация? (например, Москва, Мир):",
         "setup_complete": "Конфигурация поиска успешно сохранена! 🎉",
 
         "unknown_user": "Кажется, у вас нет профиля.\n"
