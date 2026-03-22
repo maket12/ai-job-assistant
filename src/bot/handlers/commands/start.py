@@ -26,7 +26,7 @@ async def start(
 
     try:
         if user is None:
-            await db.users.create_user(
+            user = await db.users.create_user(
                 user_id=message.from_user.id,
                 username=message.from_user.username,
                 first_name=message.from_user.first_name,

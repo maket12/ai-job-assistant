@@ -4,4 +4,5 @@ INSERT INTO users (
     first_name,
     language
 )
-VALUES ($1, $2, $3, $4);
+VALUES ($1, $2, $3, $4)
+RETURNING *;

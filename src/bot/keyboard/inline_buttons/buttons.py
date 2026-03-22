@@ -53,7 +53,7 @@ def create_change_language_markup(languages: dict = INLINE_BUTTONS, current_lang
             )
         markup.add(btn)
 
-    markup.add(InlineKeyboardButton(
+    markup.row(InlineKeyboardButton(
         text=INLINE_BUTTONS[current_language]["back_btn"],
         callback_data="language_back"
     ))

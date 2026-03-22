@@ -35,6 +35,7 @@ async def change_language(call: types.CallbackQuery, state: FSMContext, db: Data
         bot_logger.log_handler_error("change_language", e)
         msg = await call.message.answer(text=MESSAGES[user.language]["unknown_error"])
     finally:
+        await call.message.delete()
         messages_to_delete = (await state.get_data()).get("messages_to_delete", set())
         if msg:
             messages_to_delete.add(msg.message_id)
@@ -64,3 +65,7 @@ async def language_back(call: types.CallbackQuery, state: FSMContext, user: User
         await account(call=call, state=state, user=user)
     except Exception as e:
         bot_logger.log_handler_error("language_back", e)
+    finally:
+        messages_to_delete = (await state.get_data()).get("messages_to_delete", set())
+        messages_to_delete.add(call.message.message_id)
+        await state.update_data(messages_to_delete=messages_to_delete)
