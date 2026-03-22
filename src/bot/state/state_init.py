@@ -1,13 +1,12 @@
 from aiogram.fsm.state import State, StatesGroup
 
 
-class UploadCV(StatesGroup):
+class UploadCVState(StatesGroup):
     get_cv = State()
 
 
-class GetVoiceMessage(StatesGroup):
-    get_voice = State()
-
-
-class GetYoutubeVideo(StatesGroup):
-    get_video = State()
+class SearchSettingsState(StatesGroup):
+    waiting_for_skills = State()
+    waiting_for_grade = State()
+    waiting_for_job_type = State()
+    waiting_for_location = State()

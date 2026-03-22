@@ -7,7 +7,7 @@ from src.bot.handlers.inline_buttons.main_menu import account
 from src.bot.handlers.inline_buttons.account_menu import edit_cv
 from src.bot.keyboard.reply_buttons.buttons import create_back_markup
 from src.bot.keyboard.inline_buttons.buttons import create_delete_cv_markup
-from src.bot.state.state_init import UploadCV
+from src.bot.state.state_init import UploadCVState
 
 from src.locales.messages import MESSAGES
 
@@ -29,7 +29,7 @@ async def upload_cv(call: types.CallbackQuery, state: FSMContext, user: User):
             text=MESSAGES[user.language]["upload_cv"],
             reply_markup=create_back_markup(current_language=user.language)
         )
-        await state.set_state(UploadCV.get_cv)
+        await state.set_state(UploadCVState.get_cv)
     except Exception as e:
         bot_logger.log_handler_error("upload_cv", e)
         msg = await call.message.answer(

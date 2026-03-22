@@ -18,7 +18,7 @@ async def language(message: types.Message, state: FSMContext, user: User):
     try:
         msg = await message.answer(
             text=MESSAGES[user.language]["language"],
-            reply_markup=create_change_language_markup(),
+            reply_markup=create_change_language_markup(current_language=user.language),
         )
     except Exception as e:
         bot_logger.log_handler_error("language", e)

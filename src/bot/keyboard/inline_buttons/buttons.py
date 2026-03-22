@@ -29,6 +29,9 @@ def create_account_menu_markup(current_language: str = DEFAULT_LANGUAGE) -> Inli
         ],
         [
             InlineKeyboardButton(text=texts[1], callback_data="edit_cv")
+        ],
+        [
+            InlineKeyboardButton(text=texts[2], callback_data="account_menu_back")
         ]
     ])
 
@@ -50,6 +53,11 @@ def create_change_language_markup(languages: dict = INLINE_BUTTONS, current_lang
             )
         markup.add(btn)
 
+    markup.add(InlineKeyboardButton(
+        text=INLINE_BUTTONS[current_language]["back_btn"],
+        callback_data="language_back"
+    ))
+
     return markup.as_markup()
 
 def create_edit_cv_markup(current_language: str = DEFAULT_LANGUAGE, cv_set: bool = True) -> InlineKeyboardMarkup:
@@ -67,7 +75,13 @@ def create_edit_cv_markup(current_language: str = DEFAULT_LANGUAGE, cv_set: bool
                 callback_data="upload_cv"
             )
         ],
-        [delete_btn] if delete_btn else []
+        [delete_btn] if delete_btn else [],
+        [
+            InlineKeyboardButton(
+                text=INLINE_BUTTONS[current_language]["edit_cv"][2],
+                callback_data="account_menu_back"
+            )
+        ]
     ])
     return markup
 

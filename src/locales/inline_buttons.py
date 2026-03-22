@@ -7,14 +7,18 @@ INLINE_BUTTONS = {
 
         "account_menu": [
             "Change language🌍",
-            "Edit CV📝"
+            "Edit CV📝",
+            "◀️Back"
         ],
 
         "language_btn": "English🇬🇧",
 
+        "back_btn": "◀️Back",
+
         "edit_cv": [
             "Upload📥",
-            "Delete🗑"
+            "Delete🗑",
+            "◀️Back"
         ],
 
         "delete_cv": [
@@ -37,7 +41,7 @@ INLINE_BUTTONS = {
         "search": [
             "📜Available vacancies",
             "⚙️Change search settings",
-        ]
+        ],
     },
     "ru": {
         "main_menu": [
@@ -48,13 +52,17 @@ INLINE_BUTTONS = {
         "account_menu": [
             "Изменить язык🌍",
             "Редактировать резюме📝"
+            "◀️Назад"
         ],
 
         "language_btn": "Русский🇷🇺",
 
+        "back_btn": "◀️Назад",
+
         "edit_cv": [
             "Изменить📥",
-            "Удалить🗑"
+            "Удалить🗑",
+            "◀️Назад"
         ],
 
         "delete_cv": [

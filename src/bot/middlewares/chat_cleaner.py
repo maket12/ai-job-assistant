@@ -23,8 +23,6 @@ class ChatCleanerMiddleware(BaseMiddleware):
             state_data = await state.get_data()
             msg_to_delete = state_data.get("messages_to_delete", set())
 
-            bot_logger.warning(msg_to_delete)
-
             if msg_to_delete:
                 bot: Bot = data["bot"]
 

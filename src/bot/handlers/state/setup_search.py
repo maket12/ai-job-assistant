@@ -1,21 +1,17 @@
-from aiogram import Router, types, F
+from aiogram import Router, types
 from aiogram.fsm.context import FSMContext
-from aiogram.fsm.state import StatesGroup, State
+
+from src.bot.state.state_init import SearchSettingsState
+from src.bot.keyboard.inline_buttons.buttons import create_search_markup
 
 from src.locales.messages import MESSAGES
+
 from src.services.database.main import Database
 from src.services.database.models import User
-from src.bot.keyboard.inline_buttons.buttons import create_search_markup
 from src.services.logs.logger import bot_logger
 
+
 router = Router()
-
-
-class SearchSettingsState(StatesGroup):
-    waiting_for_skills = State()
-    waiting_for_grade = State()
-    waiting_for_job_type = State()
-    waiting_for_location = State()
 
 
 async def start_setup_search(message: types.Message, state: FSMContext, user: User):

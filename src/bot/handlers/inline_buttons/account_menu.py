@@ -2,6 +2,7 @@ from aiogram import Router, types, F
 from aiogram.fsm.context import FSMContext
 
 from src.bot.handlers.commands.language import language
+from src.bot.handlers.commands.menu import menu
 from src.bot.keyboard.inline_buttons.buttons import create_edit_cv_markup
 
 from src.locales.messages import MESSAGES
@@ -60,3 +61,9 @@ async def edit_cv(call: types.CallbackQuery, state: FSMContext, user: User):
         messages_to_delete = messages_to_delete.union(msg_ids)
         await state.update_data(messages_to_delete=messages_to_delete)
 
+@router.callback_query(F.data == "account_menu_back")
+async def account_back(call: types.CallbackQuery, state: FSMContext, user: User):
+    try:
+        await menu(message=call.message, state=state, user=user)
+    except Exception as e:
+        bot_logger.log_handler_error("account_back", e)

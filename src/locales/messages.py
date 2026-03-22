@@ -54,7 +54,7 @@ MESSAGES = {
             "🌆 Location of search: {location}\n"
         ),
 
-        "search_details": "Description: {description}\n",
+        "search_details": "Description:\n{description}",
 
         "search_cv": "Generated CV: {cv}\n",
         
@@ -131,7 +131,7 @@ MESSAGES = {
             "🌆 Локация для поиска: {location}\n"
         ),
 
-        "search_details": "Описание: {description}\n",
+        "search_details": "Описание вакансии:\n{description}",
 
         "search_cv": "Сгенерированное CV: {cv}\n",
 

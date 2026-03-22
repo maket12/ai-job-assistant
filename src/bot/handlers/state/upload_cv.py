@@ -3,7 +3,7 @@ from aiogram.fsm.context import FSMContext
 from aiogram.types import ReplyKeyboardRemove
 
 from src.bot.handlers.commands.menu import menu
-from src.bot.state.state_init import UploadCV
+from src.bot.state.state_init import UploadCVState
 
 from src.locales.messages import MESSAGES
 from src.locales.reply_buttons import REPLY_BUTTONS
@@ -17,7 +17,7 @@ from src.services.logs.logger import bot_logger
 router = Router()
 
 
-@router.message(UploadCV.get_cv)
+@router.message(UploadCVState.get_cv)
 async def get_cv(message: types.Message, state: FSMContext, db: Database, user: User):
     msg = None
 
