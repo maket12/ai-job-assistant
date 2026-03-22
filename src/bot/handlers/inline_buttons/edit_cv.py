@@ -41,6 +41,7 @@ async def upload_cv(call: types.CallbackQuery, state: FSMContext, user: User):
             messages_to_delete.add(msg.message_id)
         await state.update_data(messages_to_delete=messages_to_delete)
 
+
 @router.callback_query(F.data == "delete_cv")
 async def delete_cv(call: types.CallbackQuery, state: FSMContext, user: User):
     msg = None
@@ -60,6 +61,7 @@ async def delete_cv(call: types.CallbackQuery, state: FSMContext, user: User):
         if msg:
             messages_to_delete.add(msg.message_id)
         await state.update_data(messages_to_delete=messages_to_delete)
+
 
 @router.callback_query(F.data == "delete_confirm")
 async def delete_confirm(call: types.CallbackQuery, state: FSMContext, db: Database, user: User):
@@ -88,6 +90,7 @@ async def delete_confirm(call: types.CallbackQuery, state: FSMContext, db: Datab
 
         await account(call=call, state=state, user=user)
 
+
 @router.callback_query(F.data == "delete_back")
 async def delete_back(call: types.CallbackQuery, state: FSMContext, user: User):
     msg = None
@@ -104,3 +107,11 @@ async def delete_back(call: types.CallbackQuery, state: FSMContext, user: User):
         if msg:
             messages_to_delete.add(msg.message_id)
         await state.update_data(messages_to_delete=messages_to_delete)
+
+
+@router.callback_query(F.data == "edit_cv_back")
+async def edit_cv_back(call: types.CallbackQuery, state: FSMContext, user: User):
+    try:
+        await account(call=call, state=state, user=user)
+    except Exception as e:
+        bot_logger.log_handler_error("account_back", e)

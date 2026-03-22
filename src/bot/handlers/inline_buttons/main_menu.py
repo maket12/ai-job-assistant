@@ -1,9 +1,11 @@
 from aiogram import Router, types, F
 from aiogram.fsm.context import FSMContext
 
+from src.bot.handlers.commands.menu import menu
+from src.bot.handlers.state.setup_search import start_setup_search
+
 from src.bot.keyboard.inline_buttons.buttons import create_account_menu_markup
 from src.bot.keyboard.inline_buttons.buttons import create_search_markup
-from src.bot.handlers.state.setup_search import start_setup_search
 
 from src.locales.messages import MESSAGES
 
@@ -14,8 +16,16 @@ from src.services.logs.logger import bot_logger
 router = Router()
 
 
+@router.callback_query(F.data == "main_menu")
+async def main_menu(call: types.CallbackQuery, state: FSMContext, user: User):
+    try:
+        await menu(message=call.message, state=state, user=user)
+    except Exception as e:
+        bot_logger.log_handler_error("main_menu", e)
+
+
 @router.callback_query(F.data == "search")
-async def search(call: types.CallbackQuery, db: Database, state: FSMContext, user: User):
+async def search(call: types.CallbackQuery, state: FSMContext, db: Database, user: User):
     msg = None
 
     try:
@@ -46,6 +56,7 @@ async def search(call: types.CallbackQuery, db: Database, state: FSMContext, use
         if msg:
             messages_to_delete.add(msg.message_id)
         await state.update_data(messages_to_delete=messages_to_delete)
+
 
 @router.callback_query(F.data == "account")
 async def account(call: types.CallbackQuery, state: FSMContext, user: User):

@@ -2,11 +2,13 @@ from aiogram import Router, types, F
 from aiogram.fsm.context import FSMContext
 
 from src.bot.handlers.commands.language import language
+from src.bot.handlers.inline_buttons.main_menu import search
+from src.bot.handlers.state.setup_search import start_setup_search
+
 from src.bot.keyboard.inline_buttons.buttons import (
     create_vacancies_markup,
     create_vacancies_details_markup,
 )
-from src.bot.handlers.state.setup_search import start_setup_search
 
 from src.locales.messages import MESSAGES
 
@@ -57,3 +59,11 @@ async def change_settings(call: types.CallbackQuery, state: FSMContext, user: Us
             messages_to_delete.add(msg.message_id)
         messages_to_delete.add(call.message.message_id)
         await state.update_data(messages_to_delete=messages_to_delete)
+
+
+@router.callback_query(F.data == "search_menu")
+async def search_menu(call: types.CallbackQuery, state: FSMContext, db: Database, user: User):
+    try:
+        await search(call=call, state=state, db=db, user=user)
+    except Exception as e:
+        bot_logger.log_handler_error("search_menu", e)

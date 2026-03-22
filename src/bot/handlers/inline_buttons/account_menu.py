@@ -26,9 +26,11 @@ async def change_language(call: types.CallbackQuery, state: FSMContext, user: Us
             text=MESSAGES[user.language]["unknown_error"]
         )
     finally:
-        await state.update_data(
-            messages_to_delete=set([msg.message_id] if msg else [])
-        )
+        messages_to_delete = (await state.get_data()).get("messages_to_delete", set())
+        if msg:
+            messages_to_delete.add(msg.message_id)
+        await state.update_data(messages_to_delete=messages_to_delete)
+
 
 @router.callback_query(F.data == "edit_cv")
 async def edit_cv(call: types.CallbackQuery, state: FSMContext, user: User):
@@ -60,10 +62,3 @@ async def edit_cv(call: types.CallbackQuery, state: FSMContext, user: User):
         messages_to_delete = (await state.get_data()).get("messages_to_delete", set())
         messages_to_delete = messages_to_delete.union(msg_ids)
         await state.update_data(messages_to_delete=messages_to_delete)
-
-@router.callback_query(F.data == "account_menu_back")
-async def account_back(call: types.CallbackQuery, state: FSMContext, user: User):
-    try:
-        await menu(message=call.message, state=state, user=user)
-    except Exception as e:
-        bot_logger.log_handler_error("account_back", e)

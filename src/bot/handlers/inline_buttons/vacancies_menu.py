@@ -39,6 +39,7 @@ async def refuse_vacancy(call: types.CallbackQuery, state: FSMContext, user: Use
         messages_to_delete = messages_to_delete.union([call.message.message_id, msg.message_id] if msg else [call.message.message_id])
         await state.update_data(messages_to_delete=messages_to_delete)
 
+
 @router.callback_query(F.data == "details")
 async def vacancy_details(call: types.CallbackQuery, state: FSMContext, user: User):
     msg = None
@@ -59,6 +60,7 @@ async def vacancy_details(call: types.CallbackQuery, state: FSMContext, user: Us
             messages_to_delete = messages_to_delete.union([msg.message_id])
         await state.update_data(messages_to_delete=messages_to_delete)
 
+
 @router.callback_query(F.data == "create_cv")
 async def vacancy_create_cv(call: types.CallbackQuery, state: FSMContext, user: User):
     msg = None
@@ -78,6 +80,7 @@ async def vacancy_create_cv(call: types.CallbackQuery, state: FSMContext, user: 
         if msg:
             messages_to_delete = messages_to_delete.union([msg.message_id])
         await state.update_data(messages_to_delete=messages_to_delete)
+
 
 @router.callback_query(F.data == "return")
 async def vacancy_return(call: types.CallbackQuery, db: Database, state: FSMContext, user: User):

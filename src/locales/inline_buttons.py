@@ -27,7 +27,9 @@ INLINE_BUTTONS = {
         ],
 
         "search_menu": [
-
+            "Available vacancies📜",
+            "Change search settings⚙️",
+            "◀️Back"
         ],
 
         "vacancies": [
@@ -36,11 +38,6 @@ INLINE_BUTTONS = {
             "Generate CV📝",
             "Go to job posting💼",
             "◀️Back to page"
-        ],
-
-        "search": [
-            "📜Available vacancies",
-            "⚙️Change search settings",
         ],
     },
     "ru": {
@@ -70,6 +67,12 @@ INLINE_BUTTONS = {
             "◀️Назад"
         ],
 
+        "search_menu": [
+            "Доступные вакансии📜",
+            "Поменять конфигурацию поиска⚙️",
+            "◀️Назад"
+        ],
+
         "vacancies": [
             "Следующее предложение➡️",
             "Подробное описание👀",
@@ -77,11 +80,6 @@ INLINE_BUTTONS = {
             "Перейти к вакансии💼",
             "◀️Вернуться к странице"
         ],
-
-        "search": [
-            "📜Доступные вакансии",
-            "⚙️Поменять конфигурацию поиска",
-        ]
     },
     "zh": {
         "main_menu": [
@@ -110,17 +108,18 @@ INLINE_BUTTONS = {
             "◀️返回"
         ],
 
+        "search_menu": [
+            "可用职位📜",
+            "更改搜索设置⚙️",
+            "◀️返回"
+        ],
+
         "vacancies": [
             "下一个职位➡️",
             "详细说明👀",
             "生成简历📝",
             "查看职位链接💼",
             "◀️返回页面"
-        ],
-
-        "search": [
-            "📜可用职位",
-            "⚙️更改搜索设置",
         ],
     }
 }
