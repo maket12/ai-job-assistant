@@ -5,6 +5,7 @@ from aiogram.filters import CommandStart
 from aiogram.fsm.context import FSMContext
 
 from src.bot.handlers.commands.menu import menu
+from src.bot.utils.state_utils import collect_messages_to_delete
 
 from src.locales.messages import MESSAGES
 from src.config import DEFAULT_LANGUAGE, WELCOME_VIDEO_FID
@@ -47,6 +48,4 @@ async def start(
         msg = await message.answer(text=MESSAGES[lang]["unknown_error"])
         msgs_to_delete.append(msg.message_id)
     finally:
-        messages_to_delete = (await state.get_data()).get("messages_to_delete", set())
-        messages_to_delete = messages_to_delete.union(msgs_to_delete)
-        await state.update_data(messages_to_delete=messages_to_delete)
+        await collect_messages_to_delete(state=state, data=msgs_to_delete)

@@ -6,6 +6,7 @@ from src.bot.handlers.state.setup_search import start_setup_search
 
 from src.bot.keyboard.inline_buttons.buttons import create_account_menu_markup
 from src.bot.keyboard.inline_buttons.buttons import create_search_markup
+from src.bot.utils.state_utils import collect_messages_to_delete
 
 from src.locales.messages import MESSAGES
 
@@ -52,10 +53,8 @@ async def search(call: types.CallbackQuery, state: FSMContext, db: Database, use
         bot_logger.log_handler_error("search", e)
         msg = await call.message.answer(text=MESSAGES[user.language]["unknown_error"])
     finally:
-        messages_to_delete = (await state.get_data()).get("messages_to_delete", set())
         if msg:
-            messages_to_delete.add(msg.message_id)
-        await state.update_data(messages_to_delete=messages_to_delete)
+            await collect_messages_to_delete(state=state, data=msg.message_id)
 
 
 @router.callback_query(F.data == "account")
@@ -75,7 +74,5 @@ async def account(call: types.CallbackQuery, state: FSMContext, user: User):
         bot_logger.log_handler_error("account", e)
         msg = await call.message.answer(text=MESSAGES[user.language]["unknown_error"])
     finally:
-        messages_to_delete = (await state.get_data()).get("messages_to_delete", set())
         if msg:
-            messages_to_delete.add(msg.message_id)
-        await state.update_data(messages_to_delete=messages_to_delete)
+            await collect_messages_to_delete(state=state, data=msg.message_id)

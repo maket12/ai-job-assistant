@@ -1,14 +1,13 @@
 from aiogram import Router, types, F
 from aiogram.fsm.context import FSMContext
 
-from src.bot.handlers.commands.language import language
 from src.bot.handlers.inline_buttons.main_menu import search
 from src.bot.handlers.state.setup_search import start_setup_search
-
 from src.bot.keyboard.inline_buttons.buttons import (
     create_vacancies_markup,
     create_vacancies_details_markup,
 )
+from src.bot.utils.state_utils import collect_messages_to_delete
 
 from src.locales.messages import MESSAGES
 
@@ -21,7 +20,7 @@ router = Router()
 
 @router.callback_query(F.data == "vacancies")
 async def refuse_vacancy(call: types.CallbackQuery, state: FSMContext, user: User):
-    msg = None
+    msg_ids = [call.message.message_id]
 
     try:
 
@@ -35,30 +34,27 @@ async def refuse_vacancy(call: types.CallbackQuery, state: FSMContext, user: Use
             ),
             reply_markup=create_vacancies_markup(current_language=user.language)
         )
+        msg_ids.append(msg.message_id)
     except Exception as e:
         bot_logger.log_handler_error("vacancies", e)
         msg = await call.message.answer(text=MESSAGES[user.language]["unknown_error"])
+        msg_ids.append(msg.message_id)
     finally:
-        messages_to_delete = (await state.get_data()).get("messages_to_delete", set())
-        messages_to_delete = messages_to_delete.union(
-            [call.message.message_id, msg.message_id] if msg else [call.message.message_id])
-        await state.update_data(messages_to_delete=messages_to_delete)
+        await collect_messages_to_delete(state=state, data=msg_ids)
 
 
 @router.callback_query(F.data == "change_settings")
 async def change_settings(call: types.CallbackQuery, state: FSMContext, user: User):
-    msg = None
+    msg_ids = [call.message.message_id]
+
     try:
         await start_setup_search(call.message, state, user)
     except Exception as e:
         bot_logger.log_handler_error("change_settings", e)
         msg = await call.message.answer(text=MESSAGES[user.language]["unknown_error"])
+        msg_ids.append(msg.message_id)
     finally:
-        messages_to_delete = (await state.get_data()).get("messages_to_delete", set())
-        if msg:
-            messages_to_delete.add(msg.message_id)
-        messages_to_delete.add(call.message.message_id)
-        await state.update_data(messages_to_delete=messages_to_delete)
+        await collect_messages_to_delete(state=state, data=msg_ids)
 
 
 @router.callback_query(F.data == "search_menu")
