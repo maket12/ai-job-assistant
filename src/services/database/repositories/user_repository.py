@@ -12,7 +12,7 @@ class UserRepository(BaseRepository):
         query = self._get_query(entity="users", query_name=query_name)
 
         try:
-            await self._pool.execute(
+            row = await self._pool.fetchrow(
                 query, user_id, username, first_name, language
             )
             self._logger.log_db_info(
@@ -22,6 +22,8 @@ class UserRepository(BaseRepository):
         except Exception as e:
             self._logger.log_db_error(query_name=query_name, err=e)
             raise
+
+        return User.model_validate(dict(row)) if row else None
 
     async def get_user(self, user_id: int) -> Optional[User]:
         """Returns user object or None if it doesn't exist in database"""

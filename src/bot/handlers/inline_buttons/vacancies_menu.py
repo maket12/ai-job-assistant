@@ -8,6 +8,7 @@ from src.bot.keyboard.inline_buttons.buttons import (
     create_vacancies_cv_markup,
     create_search_markup
 )
+from src.bot.utils.state_utils import collect_messages_to_delete
 
 from src.locales.messages import MESSAGES
 
@@ -20,7 +21,7 @@ router = Router()
 
 @router.callback_query(F.data == "refuse")
 async def refuse_vacancy(call: types.CallbackQuery, state: FSMContext, user: User):
-    msg = None
+    msg_ids = [call.message.message_id]
 
     try:
         msg = await call.message.answer(
@@ -31,13 +32,14 @@ async def refuse_vacancy(call: types.CallbackQuery, state: FSMContext, user: Use
             ),
             reply_markup=create_vacancies_markup(current_language=user.language, url="https://hh.ru")
         )
+        msg_ids.append(msg.message_id)
     except Exception as e:
         bot_logger.log_handler_error("refuse", e)
         msg = await call.message.answer(text=MESSAGES[user.language]["unknown_error"])
+        msg_ids.append(msg.message_id)
     finally:
-        messages_to_delete = (await state.get_data()).get("messages_to_delete", set())
-        messages_to_delete = messages_to_delete.union([call.message.message_id, msg.message_id] if msg else [call.message.message_id])
-        await state.update_data(messages_to_delete=messages_to_delete)
+        await collect_messages_to_delete(state=state, data=msg_ids)
+
 
 @router.callback_query(F.data == "details")
 async def vacancy_details(call: types.CallbackQuery, state: FSMContext, user: User):
@@ -54,10 +56,9 @@ async def vacancy_details(call: types.CallbackQuery, state: FSMContext, user: Us
         bot_logger.log_handler_error("details", e)
         msg = await call.message.answer(text=MESSAGES[user.language]["unknown_error"])
     finally:
-        messages_to_delete = (await state.get_data()).get("messages_to_delete", set())
         if msg:
-            messages_to_delete = messages_to_delete.union([msg.message_id])
-        await state.update_data(messages_to_delete=messages_to_delete)
+            await collect_messages_to_delete(state=state, data=msg.message_id)
+
 
 @router.callback_query(F.data == "create_cv")
 async def vacancy_create_cv(call: types.CallbackQuery, state: FSMContext, user: User):
@@ -74,10 +75,9 @@ async def vacancy_create_cv(call: types.CallbackQuery, state: FSMContext, user: 
         bot_logger.log_handler_error("create_cv", e)
         msg = await call.message.answer(text=MESSAGES[user.language]["unknown_error"])
     finally:
-        messages_to_delete = (await state.get_data()).get("messages_to_delete", set())
         if msg:
-            messages_to_delete = messages_to_delete.union([msg.message_id])
-        await state.update_data(messages_to_delete=messages_to_delete)
+            await collect_messages_to_delete(state=state, data=msg.message_id)
+
 
 @router.callback_query(F.data == "return")
 async def vacancy_return(call: types.CallbackQuery, db: Database, state: FSMContext, user: User):
@@ -98,7 +98,5 @@ async def vacancy_return(call: types.CallbackQuery, db: Database, state: FSMCont
         bot_logger.log_handler_error("return", e)
         msg = await call.message.answer(text=MESSAGES[user.language]["unknown_error"])
     finally:
-        messages_to_delete = (await state.get_data()).get("messages_to_delete", set())
         if msg:
-            messages_to_delete = messages_to_delete.union([msg.message_id])
-        await state.update_data(messages_to_delete=messages_to_delete)
+            await collect_messages_to_delete(state=state, data=msg.message_id)

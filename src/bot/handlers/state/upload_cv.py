@@ -3,7 +3,8 @@ from aiogram.fsm.context import FSMContext
 from aiogram.types import ReplyKeyboardRemove
 
 from src.bot.handlers.commands.menu import menu
-from src.bot.state.state_init import UploadCV
+from src.bot.state.state_init import UploadCVState
+from src.bot.utils.state_utils import collect_messages_to_delete
 
 from src.locales.messages import MESSAGES
 from src.locales.reply_buttons import REPLY_BUTTONS
@@ -17,9 +18,9 @@ from src.services.logs.logger import bot_logger
 router = Router()
 
 
-@router.message(UploadCV.get_cv)
+@router.message(UploadCVState.get_cv)
 async def get_cv(message: types.Message, state: FSMContext, db: Database, user: User):
-    msg = None
+    msg_ids = [message.message_id]
 
     try:
         if message.text and message.text == REPLY_BUTTONS[user.language]["back_button"]:
@@ -33,6 +34,7 @@ async def get_cv(message: types.Message, state: FSMContext, db: Database, user: 
                 text=MESSAGES[user.language]["cv_not_file"],
                 reply_markup=ReplyKeyboardRemove()
             )
+            msg_ids.append(msg.message_id)
             return
 
         # Delete previous CV if exists
@@ -61,14 +63,12 @@ async def get_cv(message: types.Message, state: FSMContext, db: Database, user: 
             text=MESSAGES[user.language]["cv_uploaded"],
             reply_markup=ReplyKeyboardRemove()
         )
+        msg_ids.append(msg.message_id)
     except Exception as e:
         bot_logger.log_handler_error("get_cv", e)
-        await message.answer(text=MESSAGES[user.language]["unknown_error"])
+        msg = await message.answer(text=MESSAGES[user.language]["unknown_error"])
+        msg_ids.append(msg.message_id)
     finally:
         await state.clear()
-
-        messages_to_delete = (await state.get_data()).get("messages_to_delete", set())
-        messages_to_delete = messages_to_delete.union([message.message_id, msg.message_id] if msg else [message.message_id])
-        await state.update_data(messages_to_delete=messages_to_delete)
-
+        await collect_messages_to_delete(state=state, data=msg_ids)
         await menu(message=message, state=state, user=user)

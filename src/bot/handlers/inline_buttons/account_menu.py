@@ -3,10 +3,10 @@ from aiogram.fsm.context import FSMContext
 
 from src.bot.handlers.commands.language import language
 from src.bot.keyboard.inline_buttons.buttons import create_edit_cv_markup
+from src.bot.utils.state_utils import collect_messages_to_delete
 
 from src.locales.messages import MESSAGES
 
-from src.services.database.main import Database
 from src.services.database.models import User
 from src.services.logs.logger import bot_logger
 
@@ -25,9 +25,9 @@ async def change_language(call: types.CallbackQuery, state: FSMContext, user: Us
             text=MESSAGES[user.language]["unknown_error"]
         )
     finally:
-        await state.update_data(
-            messages_to_delete=set([msg.message_id] if msg else [])
-        )
+        if msg:
+            await collect_messages_to_delete(state=state, data=msg.message_id)
+
 
 @router.callback_query(F.data == "edit_cv")
 async def edit_cv(call: types.CallbackQuery, state: FSMContext, user: User):
@@ -56,7 +56,4 @@ async def edit_cv(call: types.CallbackQuery, state: FSMContext, user: User):
         )
         msg_ids.append(m1.message_id)
     finally:
-        messages_to_delete = (await state.get_data()).get("messages_to_delete", set())
-        messages_to_delete = messages_to_delete.union(msg_ids)
-        await state.update_data(messages_to_delete=messages_to_delete)
-
+        await collect_messages_to_delete(state=state, data=msg_ids)

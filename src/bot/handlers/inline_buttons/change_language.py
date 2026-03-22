@@ -2,6 +2,8 @@ from aiogram import Router, types, F
 from aiogram.fsm.context import FSMContext
 
 from src.bot.handlers.commands.menu import menu
+from src.bot.handlers.inline_buttons.main_menu import account
+from src.bot.utils.state_utils import collect_messages_to_delete
 
 from src.locales.messages import MESSAGES
 
@@ -34,10 +36,9 @@ async def change_language(call: types.CallbackQuery, state: FSMContext, db: Data
         bot_logger.log_handler_error("change_language", e)
         msg = await call.message.answer(text=MESSAGES[user.language]["unknown_error"])
     finally:
-        messages_to_delete = (await state.get_data()).get("messages_to_delete", set())
         if msg:
-            messages_to_delete.add(msg.message_id)
-        await state.update_data(messages_to_delete=messages_to_delete)
+            await collect_messages_to_delete(state=state, data=msg.message_id)
+
 
 @router.callback_query(F.data == "current_language")
 async def current_language(call: types.CallbackQuery, state: FSMContext,user: User):
@@ -52,8 +53,13 @@ async def current_language(call: types.CallbackQuery, state: FSMContext,user: Us
         bot_logger.log_handler_error("current_language", e)
         msg = await call.message.answer(text=MESSAGES[user.language]["unknown_error"])
     finally:
-        messages_to_delete = (await state.get_data()).get("messages_to_delete", set())
-        bot_logger.warning(messages_to_delete)
         if msg:
-            messages_to_delete.add(msg.message_id)
-        await state.update_data(messages_to_delete=messages_to_delete)
+            await collect_messages_to_delete(state=state, data=msg.message_id)
+
+
+@router.callback_query(F.data == "language_back")
+async def language_back(call: types.CallbackQuery, state: FSMContext, user: User):
+    try:
+        await account(call=call, state=state, user=user)
+    except Exception as e:
+        bot_logger.log_handler_error("language_back", e)
